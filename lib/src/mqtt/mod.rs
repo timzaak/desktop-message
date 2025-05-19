@@ -17,7 +17,7 @@ impl MqttServer {
         let socket = socket.tcp()?;
         Ok((address, socket))
     }
-    
+
     pub async fn start_rmqtt_server(listener:Listener) -> Result<()>{
         let scx = ServerContext::new().build().await;
         acl::register_named(&scx, "acl", true, false).await?;

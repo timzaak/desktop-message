@@ -10,16 +10,16 @@ register!(AclPlugin::new);
 
 #[derive(Plugin)]
 pub struct AclPlugin {
-    scx: ServerContext,
-    name: String,
+    //scx: ServerContext,
+    //name: String,
     register: Box<dyn Register>,
 }
 impl AclPlugin {
     #[inline]
-    async fn new<N: Into<String>>(scx: ServerContext, name: N) -> Result<Self> {
-        let name = name.into();
+    async fn new<N: Into<String>>(scx: ServerContext, _name: N) -> Result<Self> {
+        // let name = name.into();
         let register = scx.extends.hook_mgr().register();
-        Ok(Self { scx, name, register })
+        Ok(Self { register })
     }
 }
 

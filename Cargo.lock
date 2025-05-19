@@ -235,7 +235,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "lib",
- "rmqtt",
+ "log",
+ "serde_json",
  "tokio",
  "tracing",
  "tracing-subscriber",
@@ -1344,6 +1345,8 @@ dependencies = [
  "once_cell",
  "rmqtt",
  "salvo",
+ "serde",
+ "serde_json",
  "tokio",
 ]
 

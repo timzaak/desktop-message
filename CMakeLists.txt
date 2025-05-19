@@ -1,21 +1,20 @@
 # This is for c_example.c test case
 cmake_minimum_required(VERSION 3.31)
-project(tiny-mqtt LANGUAGES C)
+
+project(tiny_rmqtt_example LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
 
 include_directories(lib/include)
 
-set(SOURCES
-        lib/examples/c_example.c
-)
+set(SOURCES lib/examples/c_example.c)
 
 
-add_executable(tiny_mqtt_example ${SOURCES})
+add_executable(tiny_rmqtt_example ${SOURCES})
 
+target_link_libraries(tiny_rmqtt_example PRIVATE
+        ${CMAKE_SOURCE_DIR}/target/release/lib.dll.lib
 
-target_link_libraries(tiny_rmqtt_example
-        PRIVATE ${CMAKE_SOURCE_DIR}/target/release/lib.dll.lib
 )
 
 
