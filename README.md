@@ -1,6 +1,6 @@
-### Tiny-MQTT
+### Tiny-PROTOCOL
 
-wrap rmqtt, support mqtt protocol and http download endpoint for PC usage.
+PC端运行的 MQTT+Http Server，方便和设备端做通信。
 
 
 

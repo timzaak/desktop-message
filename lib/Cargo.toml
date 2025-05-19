@@ -12,7 +12,7 @@ crate-type = ["cdylib", "lib"]
 
 
 [dependencies]
-tokio.workspace = true
+tokio = {workspace = true}
 rmqtt = { workspace = true, features = ["plugin", "rmqtt-macros"]}
 log = { workspace = true }
 futures = {workspace = true}

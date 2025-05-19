@@ -45,6 +45,7 @@ impl Plugin for AclPlugin {
         Ok(false)
     }
 
+    #[inline]
     async fn start(&mut self) -> Result<()> {
         self.register.start().await;
         Ok(())

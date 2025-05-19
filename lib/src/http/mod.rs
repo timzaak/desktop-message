@@ -1,8 +1,7 @@
+use std::net::SocketAddr;
 use salvo::prelude::*;
 use anyhow::Result;
-
-
-
+use salvo::conn::tcp::TcpAcceptor;
 #[handler]
 async fn hello_world(req:&mut Request, res: &mut Response) {
     let path = req.query::<String>("path");
@@ -16,11 +15,23 @@ async fn hello_world(req:&mut Request, res: &mut Response) {
         }
     }
 }
+pub struct HttpServer {
+}
 
-pub async fn start_http_server() -> Result<()> {
-    let acceptor = TcpListener::new("0.0.0.0:5800").bind().await;
-    let router = Router::new()
-        .push(Router::with_path("/dl").get(hello_world));
-    Server::new(acceptor).serve(router).await;
-    Ok(())
+impl HttpServer {
+    pub fn try_bind(address: SocketAddr) -> Result<(TcpAcceptor, SocketAddr)> {
+        let acceptor = tokio::runtime::Handle::current().block_on(async {
+            let acceptor = TcpListener::new(address).try_bind().await;
+            acceptor
+        })?;
+        let address = acceptor.local_addr()?;
+        Ok((acceptor, address))
+    }
+    pub async fn start_http_server(acceptor: TcpAcceptor) -> Result<()> {
+        let router = Router::new()
+            .push(Router::with_path("/dl").get(hello_world));
+        Server::new(acceptor).serve(router).await;
+        Ok(())
+    }
+    
 }
