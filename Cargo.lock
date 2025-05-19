@@ -1341,6 +1341,7 @@ dependencies = [
  "cbindgen",
  "futures",
  "log",
+ "once_cell",
  "rmqtt",
  "salvo",
  "tokio",
