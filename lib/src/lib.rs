@@ -29,7 +29,7 @@ pub enum ErrorCode {
 
 
 #[unsafe(no_mangle)]
-pub extern "C" fn tiny_rmqtt_get_config(output:*mut c_char) -> ErrorCode {
+pub extern "C" fn tiny_protocol_get_config(output:*mut c_char) -> ErrorCode {
     if let Some(server) = SERVER.get() {
         let config = ServerConfig {
             mqtt_address: server.0.mqtt_address.to_string(),
@@ -50,7 +50,7 @@ pub extern "C" fn tiny_rmqtt_get_config(output:*mut c_char) -> ErrorCode {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn tiny_rmqtt_start_server(config: *const c_char)  -> ErrorCode {
+pub extern "C" fn tiny_protocol_start_server(config: *const c_char)  -> ErrorCode {
     if SERVER.get().is_some() {
         return ErrorCode::ServerHasInit;
     }

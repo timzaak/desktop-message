@@ -1,7 +1,10 @@
 ### Tiny-PROTOCOL
 
-PC端运行的 MQTT+Http Server，方便和设备端做通信。
+PC <- tiny-protocol(mqtt+ http static file server)  -> devices
 
+### how to use it with desktop software
+
+It provides C header file and dynamic library, the [CmakeLists.txt](./CMakeLists.txt) is an example to use it in Windows environment.
 
 
 ### TODO:

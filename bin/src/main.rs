@@ -4,8 +4,7 @@ use tracing::Level;
 use tracing_subscriber::EnvFilter;
 use lib::server::ServerConfig;
 
-fn main() -> anyhow::Result<()>{
-
+fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
         .with_env_filter(
             EnvFilter::builder()
@@ -23,7 +22,7 @@ fn main() -> anyhow::Result<()>{
     let config_str = serde_json::to_string(&config)?;
     
     let config_str  = CString::new(config_str)?;
-    lib::tiny_rmqtt_start_server(config_str.as_ptr());
+    lib::tiny_protocol_start_server(config_str.as_ptr());
 
     std::thread::sleep(Duration::from_secs(60*300));
     
