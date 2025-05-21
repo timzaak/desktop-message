@@ -15,10 +15,21 @@ void handle_signal(int sig) {
 
 
 int main() {
-    const char *config = "{ \"mqtt_address\": \"0.0.0.0:1883\", \"http_address\": \"0.0.0.0:8080\", \"basic_path\": \"\" }";
-    ErrorCode code = start_server(config);
+    const char *config = "{ \"mqtt_address\": \"0.0.0.0:1883\", \"http_address\": \"0.0.0.0:0\", \"basic_path\": \"\" }";
 
-    rust_function();
+    char config_buffer[2048] = {0};
+    tiny_rmqtt_ErrorCode code = tiny_rmqtt_start_server(config);
+
+    tiny_rmqtt_get_config(config_buffer);
+
+    tiny_rmqtt_ErrorCode result = tiny_rmqtt_get_config(config_buffer); // 调用函数
+
+    if (result == Ok) {
+        printf("get config success:\n%s\n", config_buffer);
+    } else {
+        printf("get config failure: %d\n", result);
+    }
+
     signal(SIGINT, handle_signal);   // Ctrl+C
     signal(SIGTERM, handle_signal);  // kill command
 

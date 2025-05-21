@@ -23,7 +23,7 @@ fn main() -> anyhow::Result<()>{
     let config_str = serde_json::to_string(&config)?;
     
     let config_str  = CString::new(config_str)?;
-    lib::start_server(config_str.as_ptr());
+    lib::tiny_rmqtt_start_server(config_str.as_ptr());
 
     std::thread::sleep(Duration::from_secs(60*300));
     
