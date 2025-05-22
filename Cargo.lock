@@ -1364,6 +1364,7 @@ dependencies = [
  "mdns-sd",
  "once_cell",
  "rmqtt",
+ "rmqtt-auto-subscription",
  "rmqtt-sys-topic",
  "salvo",
  "serde",
@@ -2197,6 +2198,21 @@ dependencies = [
  "tokio",
  "url",
  "uuid",
+]
+
+[[package]]
+name = "rmqtt-auto-subscription"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43a969301ca9ccc395c329cc38dce8169c5ed3ecaa683994491c23240aafa370"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "log",
+ "rmqtt",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

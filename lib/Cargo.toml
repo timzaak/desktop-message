@@ -16,6 +16,7 @@ tokio = {workspace = true}
 mdns-sd = {workspace = true}
 rmqtt = { workspace = true, features = ["plugin", "rmqtt-macros"]}
 rmqtt-sys-topic = { workspace = true }
+rmqtt-auto-subscription = { workspace = true }
 log = { workspace = true }
 futures = {workspace = true}
 async-trait = {workspace = true}
