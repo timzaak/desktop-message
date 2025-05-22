@@ -1,12 +1,15 @@
 pub mod server;
 mod mqtt;
 mod http;
+mod discovery;
 
 use std::ffi::{c_char, CStr, CString};
+use std::fmt::Display;
 use std::sync::{OnceLock};
 use crate::server::{Server, ServerConfig};
 use once_cell::sync::Lazy;
 use tokio::runtime::Runtime;
+use crate::discovery::discovery;
 
 pub struct MyHandle(pub(crate) Server);
 
@@ -19,12 +22,19 @@ static TOKIO_RT: Lazy<Runtime> = Lazy::new(|| {
 });
 
 #[repr(C)]
+#[derive(Debug)]
 pub enum ErrorCode {
     Ok = 0,
     BadConfig = 1,
     StartServerError = 2,
     InvalidServerPoint = 3,
     ServerHasInit = 4,
+    MDNSInitFailure = 5,
+}
+impl Display for ErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.to_string())
+    }
 }
 
 
@@ -47,6 +57,25 @@ pub extern "C" fn tiny_protocol_get_config(output:*mut c_char) -> ErrorCode {
         }
     }
     ErrorCode::InvalidServerPoint
+}
+
+/*
+Attention: it would block current thread for *seconds*
+*/
+#[unsafe(no_mangle)]
+pub extern "C" fn tiny_protocol_discovery(service: *const c_char, seconds: u64, output_str: *const c_char, output_str_len: usize) -> ErrorCode {
+    let service = unsafe {
+        CStr::from_ptr(service).to_string_lossy().into_owned()
+    };
+    match discovery(&service, seconds)  {
+        Ok(services) => {
+            //  todo: serialize services
+            ErrorCode::Ok
+        }
+        Err(e) => {
+            e
+        }
+    }
 }
 
 #[unsafe(no_mangle)]

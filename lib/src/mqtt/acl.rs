@@ -55,11 +55,12 @@ impl Plugin for AclPlugin {
 struct AclHandler {
 }
 
+//TODO: only 127.0.0.1 connection can subscribe system message?
 #[async_trait]
 impl Handler for AclHandler {
     async fn hook(&self, param: &Parameter, acc: Option<HookResult>) -> ReturnType {
         match param {
-            Parameter::ClientAuthenticate(connect_info) => {
+            Parameter::ClientAuthenticate(_) => {
                 if matches!(
                     acc,
                     Some(HookResult::AuthResult(AuthResult::BadUsernameOrPassword))
@@ -67,10 +68,10 @@ impl Handler for AclHandler {
                 ) {
                     return (false, acc);
                 }
-                if connect_info.client_id().starts_with("ac_") {
-                    return (false, Some(HookResult::AuthResult(AuthResult::Allow(false, None))))
-                }
-                return (false, Some(HookResult::AuthResult(AuthResult::NotAuthorized)))
+                //if connect_info.client_id().starts_with("ac_") {
+                return (false, Some(HookResult::AuthResult(AuthResult::Allow(false, None))))
+                //}
+                //return (false, Some(HookResult::AuthResult(AuthResult::NotAuthorized)))
 
             }
             _ => {}

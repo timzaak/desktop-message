@@ -13,7 +13,9 @@ crate-type = ["cdylib", "lib"]
 
 [dependencies]
 tokio = {workspace = true}
+mdns-sd = {workspace = true}
 rmqtt = { workspace = true, features = ["plugin", "rmqtt-macros"]}
+rmqtt-sys-topic = { workspace = true }
 log = { workspace = true }
 futures = {workspace = true}
 async-trait = {workspace = true}

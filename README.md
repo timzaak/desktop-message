@@ -1,6 +1,12 @@
 ### Tiny-PROTOCOL
 
-PC <- tiny-protocol(mqtt+ http static file server)  -> devices
+PC <- tiny-protocol -> devices
+
+tiny-protocol = mqtt server + http static file server + mdns-sd service discovery
+
+mqtt server used [rmqtt](https://github.com/rmqtt/rmqtt), the [$sys System topic](https://github.com/rmqtt/rmqtt/blob/master/docs/en_US/sys-topic.md) you may need.
+
+mdns-sd used [mdns-sd](https://github.com/keepsimple1/mdns-sd).
 
 ### how to use it with desktop software
 
@@ -9,3 +15,5 @@ It provides C header file and dynamic library, the [CmakeLists.txt](./CMakeLists
 
 ### TODO:
 1. -[ ] mqtt + http bind port random. https://github.com/rmqtt/rmqtt/issues/194#issuecomment-2890146650
+2. -[ ] plugin config read form string rather than dir.
+3. -[ ] mdns-sd ServiceInfo serialize to C API.
