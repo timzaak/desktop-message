@@ -8,6 +8,7 @@ use std::fmt::Display;
 use std::sync::{OnceLock};
 use crate::server::{Server, ServerConfig};
 use once_cell::sync::Lazy;
+use serde_json::json;
 use tokio::runtime::Runtime;
 use crate::discovery::discovery;
 
@@ -30,6 +31,7 @@ pub enum ErrorCode {
     InvalidServerPoint = 3,
     ServerHasInit = 4,
     MDNSInitFailure = 5,
+    OutOfAllocatedBounds = 6,
 }
 impl Display for ErrorCode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -63,13 +65,40 @@ pub extern "C" fn tiny_protocol_get_config(output:*mut c_char) -> ErrorCode {
 Attention: it would block current thread for *seconds*
 */
 #[unsafe(no_mangle)]
-pub extern "C" fn tiny_protocol_discovery(service: *const c_char, seconds: u64, output_str: *const c_char, output_str_len: usize) -> ErrorCode {
+pub extern "C" fn tiny_protocol_discovery(service: *const c_char, seconds: u64, output_str: *mut c_char, output_str_len: usize) -> ErrorCode {
     let service = unsafe {
         CStr::from_ptr(service).to_string_lossy().into_owned()
     };
     match discovery(&service, seconds)  {
         Ok(services) => {
             //  todo: serialize services
+            let j = json!(services.iter().map(|service|{
+                let addresses = json!(service.get_addresses().iter().map(|addr|{
+                    addr.to_string()
+                }).collect::<Vec<_>>());
+                let properties = service.get_properties().iter().map(|property| {
+                   json!({
+                        "key": property.key(),
+                        "value": property.val_str(),
+                    })
+                }).collect::<Vec<_>>(); 
+                
+                json!({
+                    "hostname": service.get_hostname(), 
+                    "addresses": addresses,
+                    "port": service.get_port(),
+                    "properties": properties,
+                })
+            }).collect::<Vec<_>>());
+            let j_str = CString::new(j.to_string()).unwrap();
+            let j_str = j_str.as_bytes_with_nul();
+            
+            if j_str.len() > output_str_len {
+                return ErrorCode::OutOfAllocatedBounds;
+            }
+            unsafe {
+                std::ptr::copy_nonoverlapping(j_str.as_ptr() as *const c_char, output_str, j_str.len());
+            }
             ErrorCode::Ok
         }
         Err(e) => {

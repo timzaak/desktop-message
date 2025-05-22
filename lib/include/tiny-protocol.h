@@ -12,6 +12,7 @@ typedef enum tiny_protocol_ErrorCode {
   InvalidServerPoint = 3,
   ServerHasInit = 4,
   MDNSInitFailure = 5,
+  OutOfAllocatedBounds = 6,
 } tiny_protocol_ErrorCode;
 
 #ifdef __cplusplus
@@ -22,7 +23,7 @@ enum tiny_protocol_ErrorCode tiny_protocol_get_config(char *output);
 
 enum tiny_protocol_ErrorCode tiny_protocol_discovery(const char *service,
                                                      uint64_t seconds,
-                                                     const char *output_str,
+                                                     char *output_str,
                                                      uintptr_t output_str_len);
 
 enum tiny_protocol_ErrorCode tiny_protocol_start_server(const char *config);

@@ -16,4 +16,3 @@ It provides C header file and dynamic library, the [CmakeLists.txt](./CMakeLists
 ### TODO:
 1. -[ ] mqtt + http bind port random. https://github.com/rmqtt/rmqtt/issues/194#issuecomment-2890146650
 2. -[ ] plugin config read form string rather than dir.
-3. -[ ] mdns-sd ServiceInfo serialize to C API.
