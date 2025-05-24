@@ -1,7 +1,7 @@
 [workspace]
 resolver = "3"
 members = [
-    "lib",
+    "deskmg",
     "bin",
 ]
 
@@ -12,7 +12,7 @@ authors = ["timzaak <zsy.evan@gmail.com>"]
 rust-version = "1.86.0"
 
 [workspace.dependencies]
-lib =  { path = "lib" }
+deskmg =  { path = "deskmg" }
 cbindgen = "0.28.0"
 mdns-sd = "0.13"
 

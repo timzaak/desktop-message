@@ -6,7 +6,7 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-lib.workspace = true
+deskmg.workspace = true
 # tokio = {workspace = true, features = ["macros", "rt-multi-thread", "signal"]}
 anyhow = {workspace = true }
 
