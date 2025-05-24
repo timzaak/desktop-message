@@ -1,8 +1,9 @@
 [workspace]
 resolver = "3"
 members = [
-    "deskmg",
+    "deskmsg",
     "bin",
+    "deskmsg_c",
 ]
 
 [workspace.package]
@@ -12,7 +13,8 @@ authors = ["timzaak <zsy.evan@gmail.com>"]
 rust-version = "1.86.0"
 
 [workspace.dependencies]
-deskmg =  { path = "deskmg" }
+deskmsg = {path = "deskmsg"}
+deskmsg_c = {path = "deskmsg_c" }
 cbindgen = "0.28.0"
 mdns-sd = "0.13"
 
@@ -26,7 +28,7 @@ rmqtt-sys-topic = "0.1"
 
 
 
-salvo = "0.76" # from rmqtt-http-api
+salvo = "0.76" # from https://github.com/rmqtt/rmqtt/blob/master/rmqtt-plugins/rmqtt-http-api/Cargo.toml
 
 # copy from rmqtt workspace
 tokio = { version = "1.44",  default-features = false }
@@ -80,7 +82,8 @@ regex = "=1.11.1"
 backoff = "0.4"
 webpki-roots = "0.26"
 toml = "0.8"
-rust-box = "0.14"
+rust-box = "0.15"
+scopeguard = "1"
 
 [profile.dev]
 opt-level = 0

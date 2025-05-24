@@ -1,4 +1,4 @@
-#include "../include/tiny-protocol.h"
+#include "../include/deskmsg_c.h"
 #include <signal.h>
 #include <windows.h>
 #include <stdio.h>

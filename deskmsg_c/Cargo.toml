@@ -1,0 +1,22 @@
+[package]
+name = "deskmsg_c"
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "deskmsg_c"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+deskmsg = { workspace = true }
+once_cell = {workspace =  true}
+tokio = {workspace = true}
+#serde = {workspace = true, features = ["derive"]}
+serde_json = {workspace = true}
+log = {workspace = true}
+
+
+[build-dependencies]
+cbindgen = { workspace = true }
