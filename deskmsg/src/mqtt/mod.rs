@@ -9,11 +9,11 @@ mod acl;
 pub struct MqttServer {}
 
 impl MqttServer {
-    //TODO: address could not modify
-    // https://github.com/rmqtt/rmqtt/issues/194
+
     pub fn try_bind(address:SocketAddr) -> Result<(SocketAddr, Listener)>{
         let socket = Builder::new().name("external/tcp").laddr(address.clone()).bind()?;
         let socket = socket.tcp()?;
+        let address = socket.local_addr()?;
         Ok((address, socket))
     }
 

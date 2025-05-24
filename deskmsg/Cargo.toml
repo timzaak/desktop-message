@@ -1,5 +1,5 @@
 [package]
-name = "lib"
+name = "deskmsg"
 edition.workspace = true
 version.workspace = true
 authors.workspace = true
@@ -7,8 +7,8 @@ rust-version.workspace = true
 
 
 [lib]
-name = "lib"
-crate-type = ["cdylib", "lib"]
+name = "deskmsg"
+crate-type = ["lib"]
 
 
 [dependencies]
@@ -24,7 +24,3 @@ anyhow = {workspace = true}
 salvo = {workspace = true, features = ["affix-state"]}
 once_cell = {workspace = true}
 serde = {workspace = true, features = ["derive"]}
-serde_json = {workspace = true}
-
-[build-dependencies]
-cbindgen.workspace = true
