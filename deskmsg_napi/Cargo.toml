@@ -1,0 +1,18 @@
+[package]
+name = "deskmsg_napi"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = { version = "2.16.0", default-features = false, features = ["napi4"] } # Use a recent stable version
+napi-derive = "2.16.0" # Match napi version
+deskmsg_c = { path = "../deskmsg_c" }
+
+# Potentially add tokio if direct async calls or types from it are needed in the napi layer itself
+# tokio = { workspace = true } # Uncomment if needed
+
+[build-dependencies]
+napi-build = "2.1.0" # Or latest compatible stable version
