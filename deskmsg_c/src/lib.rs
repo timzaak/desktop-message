@@ -4,7 +4,7 @@ use std::sync::OnceLock;
 use deskmsg::server::{Server, ServerConfig};
 use serde_json::json;
 use tokio::runtime::Runtime;
-use deskmsg::discovery::discovery;
+use deskmsg::discovery::{discovery_mdns};
 use log;
 use once_cell::sync::Lazy;
 
@@ -35,7 +35,7 @@ impl Display for ErrorCode {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn tiny_protocol_get_config(output_ptr: *mut c_char) -> ErrorCode {
+pub extern "C" fn deskmsg_get_config(output_ptr: *mut c_char) -> ErrorCode {
     if let Some(server_handle) = SERVER.get() {
         let config = ServerConfig {
             mqtt_address: server_handle.0.mqtt_address.to_string(),
@@ -59,12 +59,12 @@ pub extern "C" fn tiny_protocol_get_config(output_ptr: *mut c_char) -> ErrorCode
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn tiny_protocol_discovery(service_ptr: *const c_char, seconds: u64, output_str_ptr: *mut c_char, output_str_len: usize) -> ErrorCode {
+pub extern "C" fn deskmsg_discovery(service_ptr: *const c_char, seconds: u64, output_str_ptr: *mut c_char, output_str_len: usize) -> ErrorCode {
     let service_name = unsafe { // Renamed service to service_name for clarity
         CStr::from_ptr(service_ptr).to_string_lossy().into_owned()
     };
 
-    match discovery(&service_name, seconds) {
+    match discovery_mdns(&service_name, seconds) {
         Ok(services) => {
             let j = json!(services.iter().map(|service_info|{ // Renamed service to service_info
                 let addresses = json!(service_info.get_addresses().iter().map(|addr|{
@@ -103,7 +103,7 @@ pub extern "C" fn tiny_protocol_discovery(service_ptr: *const c_char, seconds: u
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn tiny_protocol_start_server(config_ptr: *const c_char) -> ErrorCode {
+pub extern "C" fn deskmsg_start_server(config_ptr: *const c_char) -> ErrorCode {
     
     if SERVER.get().is_some() {
         return ErrorCode::ServerHasInit;

@@ -15,8 +15,9 @@ rust-version = "1.86.0"
 [workspace.dependencies]
 deskmsg = {path = "deskmsg"}
 deskmsg_c = {path = "deskmsg_c" }
-cbindgen = "0.28.0"
+cbindgen = "0.29"
 mdns-sd = "0.13"
+btleplug = "0.11"
 
 # log
 tracing = "0.1"

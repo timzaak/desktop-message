@@ -24,14 +24,14 @@ typedef enum deskmsg_ErrorCode {
 extern "C" {
 #endif // __cplusplus
 
-enum deskmsg_ErrorCode tiny_protocol_get_config(char *output_ptr);
+enum deskmsg_ErrorCode deskmsg_get_config(char *output_ptr);
 
-enum deskmsg_ErrorCode tiny_protocol_discovery(const char *service_ptr,
-                                               uint64_t seconds,
-                                               char *output_str_ptr,
-                                               uintptr_t output_str_len);
+enum deskmsg_ErrorCode deskmsg_discovery(const char *service_ptr,
+                                         uint64_t seconds,
+                                         char *output_str_ptr,
+                                         uintptr_t output_str_len);
 
-enum deskmsg_ErrorCode tiny_protocol_start_server(const char *config_ptr);
+enum deskmsg_ErrorCode deskmsg_start_server(const char *config_ptr);
 
 #ifdef __cplusplus
 }  // extern "C"
