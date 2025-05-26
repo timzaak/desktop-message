@@ -1,9 +1,7 @@
-# This is for c_example.c test case
 cmake_minimum_required(VERSION 3.31)
 
 project(tiny_rmqtt_example LANGUAGES C)
 
-set(CMAKE_C_STANDARD 11)
 
 include_directories(lib/include)
 

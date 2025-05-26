@@ -9,7 +9,7 @@ fn main() {
       .with_crate(crate_dir)
       .with_language(cbindgen::Language::C)
       .with_cpp_compat(true)
-      .with_no_includes()
+      // .with_no_includes()
       .with_pragma_once(true)
       .with_include_guard("DESKMSG_C_H")
       .with_item_prefix("deskmsg_") // Optional: to prefix all generated items

@@ -18,11 +18,11 @@ int main() {
     const char *config = "{ \"mqtt_address\": \"0.0.0.0:1883\", \"http_address\": \"0.0.0.0:0\", \"basic_path\": \"\" }";
 
     char config_buffer[2048] = {0};
-    tiny_protocol_ErrorCode code = tiny_protocol_start_server(config);
+    deskmsg_ErrorCode code = tiny_protocol_start_server(config);
 
     tiny_protocol_get_config(config_buffer);
 
-    tiny_protocol_ErrorCode result = tiny_protocol_get_config(config_buffer); // 调用函数
+    deskmsg_ErrorCode result = tiny_protocol_get_config(config_buffer); // 调用函数
 
     if (result == Ok) {
         printf("get config success:\n%s\n", config_buffer);

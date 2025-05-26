@@ -1,6 +1,6 @@
 use std::ffi::{c_char, CStr, CString};
+use std::fmt::Display;
 use std::sync::OnceLock;
-use deskmsg::ErrorCode;
 use deskmsg::server::{Server, ServerConfig};
 use serde_json::json;
 use tokio::runtime::Runtime;
@@ -15,6 +15,24 @@ pub static SERVER: OnceLock<MyHandle> = OnceLock::new();
 pub static TOKIO_RT: Lazy<Runtime> = Lazy::new(|| { // Made public
     Runtime::new().expect("Failed to create Tokio runtime")
 });
+
+
+#[repr(C)]
+#[derive(Debug)]
+pub enum ErrorCode { // Already public, no change needed here based on instruction
+    Ok = 0,
+    BadConfig = 1,
+    StartServerError = 2,
+    InvalidServerPoint = 3,
+    ServerHasInit = 4,
+    MDNSInitFailure = 5,
+    OutOfAllocatedBounds = 6,
+}
+impl Display for ErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self) // Changed to {:?} to use Debug derive, as per typical Display for enums. Or keep as self.to_string() if specific string representations are defined. For now, using Debug.
+    }
+}
 
 #[unsafe(no_mangle)]
 pub extern "C" fn tiny_protocol_get_config(output_ptr: *mut c_char) -> ErrorCode {
@@ -78,8 +96,8 @@ pub extern "C" fn tiny_protocol_discovery(service_ptr: *const c_char, seconds: u
             }
             ErrorCode::Ok
         }
-        Err(e) => {
-            e // Assuming discovery function returns ErrorCode on error
+        Err(_) => {
+            ErrorCode::MDNSInitFailure
         }
     }
 }

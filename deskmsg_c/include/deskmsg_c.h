@@ -5,18 +5,33 @@
 
 #pragma once
 
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+typedef enum deskmsg_ErrorCode {
+  Ok = 0,
+  BadConfig = 1,
+  StartServerError = 2,
+  InvalidServerPoint = 3,
+  ServerHasInit = 4,
+  MDNSInitFailure = 5,
+  OutOfAllocatedBounds = 6,
+} deskmsg_ErrorCode;
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-deskmsg_ErrorCode tiny_protocol_get_config(char *output_ptr);
+enum deskmsg_ErrorCode tiny_protocol_get_config(char *output_ptr);
 
-deskmsg_ErrorCode tiny_protocol_discovery(const char *service_ptr,
-                                          uint64_t seconds,
-                                          char *output_str_ptr,
-                                          uintptr_t output_str_len);
+enum deskmsg_ErrorCode tiny_protocol_discovery(const char *service_ptr,
+                                               uint64_t seconds,
+                                               char *output_str_ptr,
+                                               uintptr_t output_str_len);
 
-deskmsg_ErrorCode tiny_protocol_start_server(const char *config_ptr);
+enum deskmsg_ErrorCode tiny_protocol_start_server(const char *config_ptr);
 
 #ifdef __cplusplus
 }  // extern "C"

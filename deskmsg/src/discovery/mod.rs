@@ -1,15 +1,14 @@
 use std::time::Duration;
 use mdns_sd::{ServiceDaemon, ServiceEvent, ServiceInfo};
-use crate::ErrorCode;
 use log;
-pub fn discovery(service: &str, seconds:u64) -> Result<Vec<ServiceInfo>, ErrorCode>{
+pub fn discovery(service: &str, seconds:u64) -> anyhow::Result<Vec<ServiceInfo>>{
     let mdns = ServiceDaemon::new().map_err(|e| {
         log::warn!("new ServiceDaemon error {}", e);
-        ErrorCode::MDNSInitFailure
+        e
     })?;
     let receiver  = mdns.browse(service).map_err(|e| {
         log::warn!("mdns browser error {}", e);
-        ErrorCode::MDNSInitFailure
+        e
     })?;
 
     let now = std::time::Instant::now();
