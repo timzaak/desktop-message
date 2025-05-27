@@ -23,7 +23,7 @@ fn main() -> anyhow::Result<()> {
     
     let config_str  = CString::new(config_str)?;
     
-    deskmsg_c::tiny_protocol_start_server(config_str.as_ptr());
+    deskmsg_c::deskmsg_start_server(config_str.as_ptr());
 
     std::thread::sleep(Duration::from_secs(60*300));
     
