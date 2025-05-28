@@ -4,10 +4,8 @@ use salvo::prelude::*;
 use anyhow::Result;
 use salvo::conn::tcp::TcpAcceptor;
 use once_cell::sync::OnceCell;
-use tokio::fs; // Added for directory creation
-use salvo::handler::Handler; // Added for AuthMiddleware
-use salvo::Depot; // Added for AuthMiddleware
-use salvo::FlowCtrl; // Added for AuthMiddleware
+use tokio::fs;
+
 
 // New HTTPConfig struct
 #[derive(Clone)]
@@ -149,7 +147,7 @@ impl HttpServer {
         let router = Router::new()
             .hoop(AuthMiddleware) // Added AuthMiddleware
             .push(Router::with_path("/dl").get(download))
-            .push(Router::with_path("/upload").post(upload));
+            .push(Router::with_path("/upload").hoop(max_size(1024 * 1024 * 100)).post(upload));
         Server::new(acceptor).serve(router).await;
         Ok(())
     }
