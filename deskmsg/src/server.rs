@@ -13,6 +13,7 @@ pub struct ServerConfig {
     pub mqtt_address: String,
     pub http_address: String,
     pub basic_path: String,
+    pub http_auth_token: String, // Added http_auth_token field
 }
 
 pub struct Server {
@@ -20,6 +21,7 @@ pub struct Server {
     pub mqtt_address: SocketAddr,
     pub http_address: SocketAddr,
     pub basic_path : String,
+    pub http_auth_token: String, // Added http_auth_token field
 }
 
 impl Server {
@@ -30,13 +32,15 @@ impl Server {
         let (mqtt_address, mqtt_listener) = mqtt::MqttServer::try_bind(config.mqtt_address.parse::<SocketAddr>()?)?;
         let mqtt_handler = tokio::spawn(async { mqtt::MqttServer::start_rmqtt_server(mqtt_listener).await });
         let http_handler = tokio::spawn(async { HttpServer::start_http_server(acceptor).await });
-        HttpServer::set_basic_path(config.basic_path.clone());
+        // Use the http_auth_token from ServerConfig
+        HttpServer::set_http_config(config.basic_path.clone(), config.http_auth_token.clone());
         let handler = try_join_all(vec![mqtt_handler, http_handler]);
         Ok(Server {
             handler,
             mqtt_address,
             http_address,
             basic_path: config.basic_path,
+            http_auth_token: config.http_auth_token, // Store http_auth_token
         })
     }
     
@@ -45,6 +49,7 @@ impl Server {
             mqtt_address: self.mqtt_address.to_string(),
             http_address: self.http_address.to_string(),
             basic_path: self.basic_path.clone(),
+            http_auth_token: self.http_auth_token.clone(), // Retrieve http_auth_token
         }
     }
 }

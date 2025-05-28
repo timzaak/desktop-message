@@ -37,22 +37,17 @@ impl Display for ErrorCode {
 #[unsafe(no_mangle)]
 pub extern "C" fn deskmsg_get_config(output_ptr: *mut c_char) -> ErrorCode {
     if let Some(server_handle) = SERVER.get() {
-        let config = ServerConfig {
-            mqtt_address: server_handle.0.mqtt_address.to_string(),
-            http_address: server_handle.0.http_address.to_string(),
-            basic_path: "".to_owned()
-        };
-        match serde_json::to_string(&config) {
-            Ok(str_config) => {
-                let c_str = CString::new(str_config).unwrap(); // Consider error handling for CString::new
-                let bytes = c_str.as_bytes_with_nul();
-                unsafe {
-                    std::ptr::copy_nonoverlapping(bytes.as_ptr() as *const c_char, output_ptr, bytes.len());
-                }
-                ErrorCode::Ok
-            }
-            Err(_) => ErrorCode::BadConfig
+        let str_config = json!({
+            "mqtt_address": server_handle.0.mqtt_address.to_string(),
+            "http_address": server_handle.0.http_address.to_string(),
+        }).to_string();
+
+        let c_str = CString::new(str_config).unwrap(); // Consider error handling for CString::new
+        let bytes = c_str.as_bytes_with_nul();
+        unsafe {
+            std::ptr::copy_nonoverlapping(bytes.as_ptr() as *const c_char, output_ptr, bytes.len());
         }
+        ErrorCode::Ok
     } else {
         ErrorCode::InvalidServerPoint
     }

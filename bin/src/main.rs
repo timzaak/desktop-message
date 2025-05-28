@@ -18,6 +18,7 @@ fn main() -> anyhow::Result<()> {
         mqtt_address: "0.0.0.0:0".to_string(),
         http_address: "0.0.0.0:0".to_string(),
         basic_path: "".to_string(),
+        http_auth_token: "default_token_from_main".to_string(), // Added new field
     };
     let config_str = serde_json::to_string(&config)?;
     

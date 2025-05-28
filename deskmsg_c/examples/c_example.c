@@ -15,7 +15,7 @@ void handle_signal(int sig) {
 
 
 int main() {
-    const char *config = "{ \"mqtt_address\": \"0.0.0.0:1883\", \"http_address\": \"0.0.0.0:0\", \"basic_path\": \"\" }";
+    const char *config = "{ \"mqtt_address\": \"0.0.0.0:1883\", \"http_address\": \"0.0.0.0:0\", \"basic_path\": \"\", \"http_auth_token\":\"abc\" }";
 
     char config_buffer[2048] = {0};
     deskmsg_ErrorCode code = deskmsg_start_server(config);
