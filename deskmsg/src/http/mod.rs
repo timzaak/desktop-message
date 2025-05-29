@@ -7,16 +7,14 @@ use once_cell::sync::OnceCell;
 use tokio::fs;
 
 
-// New HTTPConfig struct
 #[derive(Clone)]
 pub struct HTTPConfig {
     pub basic_path: String,
     pub auth_token: String,
 }
 
-static HTTP_CONFIG: OnceCell<HTTPConfig> = OnceCell::new(); // New static config
+static HTTP_CONFIG: OnceCell<HTTPConfig> = OnceCell::new();
 
-// Authentication Middleware
 struct AuthMiddleware;
 
 #[async_trait]
@@ -24,11 +22,11 @@ impl Handler for AuthMiddleware {
     async fn handle(&self, req: &mut Request, depot: &mut Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
         match HTTP_CONFIG.get() {
             Some(config) => {
-                if config.auth_token.is_empty() { // If configured token is empty, effectively no auth
+                if config.auth_token.is_empty() {
                     ctrl.call_next(req, depot, res).await;
                     return;
                 }
-                if let Some(header_value) = req.headers().get("X-Auth") {
+                if let Some(header_value) = req.headers().get("X-AUTH") {
                     if let Ok(header_str) = header_value.to_str() {
                         if header_str == config.auth_token {
                             ctrl.call_next(req, depot, res).await;
@@ -38,11 +36,11 @@ impl Handler for AuthMiddleware {
                         }
                     } else {
                         res.status_code(StatusCode::BAD_REQUEST);
-                        res.render("Forbidden: Invalid X-Auth header format");
+                        res.render("Forbidden: Invalid X-AUTH header format");
                     }
                 } else {
                     res.status_code(StatusCode::FORBIDDEN);
-                    res.render("Forbidden: Missing X-Auth header");
+                    res.render("Forbidden: Missing X-AUTH header");
                 }
             }
             None => {
@@ -61,7 +59,7 @@ async fn download(req:&mut Request, res: &mut Response) {
         }
         (_, None) => {
             res.status_code(StatusCode::BAD_REQUEST);
-            res.render("HTTP Service not configured"); // More generic message
+            res.render("HTTP Service not configured");
         }
         (None, Some(_)) => { 
             res.status_code(StatusCode::NOT_FOUND);
