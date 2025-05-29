@@ -4,6 +4,7 @@ members = [
     "deskmsg",
     "bin",
     "deskmsg_c",
+    "deskmsg_napi",
 ]
 
 [workspace.package]

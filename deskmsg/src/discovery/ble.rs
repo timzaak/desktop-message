@@ -1,6 +1,6 @@
 
 use anyhow::Result;
-use btleplug::api::{Central, Characteristic, Descriptor, Manager as _, ScanFilter, WriteType};
+use btleplug::api::{Central, Manager as _, ScanFilter, WriteType};
 use btleplug::platform::{Manager};
 use uuid::Uuid;
 use std::time::Duration;

@@ -1,6 +1,6 @@
 ### Tiny-PROTOCOL
 
-PC <- tiny-protocol -> devices
+PC <- tiny-protocol -> devices, support Rust, C, C++, Node.js.
 
 tiny-protocol = mqtt server + http static file server + mdns-sd or ble service discovery
 
@@ -17,7 +17,7 @@ It provides C header file and dynamic library, the [CmakeLists.txt](./CMakeLists
 
 ### TODO:
 1. -[ ] plugin config read from string rather than dir. https://github.com/rmqtt/rmqtt/issues/196
-2. -[ ] stable ble api
+2. -[ ] test deskmsg_c, deskmsg_napi
 
 ## Building and Using `deskmsg_c` (for C/C++ Projects)
 
@@ -51,3 +51,4 @@ The `deskmsg_c` library provides a C-compatible API for the core Rust functional
 *   You can install the `deskmsg_c` headers and library files to a system location using CMake. From the build directory of a project that includes `deskmsg_c` (or a standalone build directory for `deskmsg_c` itself if configured): 
     `cmake --build . --target install`
     This requires configuring `CMAKE_INSTALL_PREFIX`.
+
