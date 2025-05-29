@@ -8,7 +8,7 @@ rust-version.workspace = true
 [dependencies]
 deskmsg_c.workspace = true
 deskmsg.workspace = true
-# tokio = {workspace = true, features = ["macros", "rt-multi-thread", "signal"]}
+tokio = {workspace = true, features = ["macros", "rt-multi-thread", "signal"]}
 anyhow = {workspace = true }
 
 tracing.workspace = true

@@ -26,6 +26,12 @@ fn main() -> anyhow::Result<()> {
     
     deskmsg_c::deskmsg_start_server(config_str.as_ptr());
 
+    // let rt  = tokio::runtime::Runtime::new()?;
+    // rt.block_on(async {
+    //     let server = deskmsg::server::Server::new(config).unwrap();
+    // });
+    //server.get_config()
+
     std::thread::sleep(Duration::from_secs(60*300));
     
     Ok(())

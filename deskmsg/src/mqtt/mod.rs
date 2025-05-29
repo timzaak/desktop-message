@@ -21,11 +21,10 @@ impl MqttServer {
         let scx = ServerContext::new()
             .build().await;
         acl::register_named(&scx, "acl", true, false).await?;
+        
         rmqtt_sys_topic::register_named(&scx, "sys-topic", true, false).await?;
-        
-        // useless
-        rmqtt_auto_subscription::register_named(&scx, "auto-subscription", true, false).await?;
-        
+        // need config file. 
+        // rmqtt_auto_subscription::register_named(&scx, "auto-subscription", true, false).await?;
         
         RMqttServer::new(scx)
             .listener(listener)

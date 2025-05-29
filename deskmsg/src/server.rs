@@ -17,7 +17,7 @@ pub struct ServerConfig {
 }
 
 pub struct Server {
-    pub handler: TryJoinAll<JoinHandle<Result<()>>>,
+    pub handler: TryJoinAll<JoinHandle<()>>,
     pub mqtt_address: SocketAddr,
     pub http_address: SocketAddr,
     pub basic_path : String,
@@ -30,8 +30,16 @@ impl Server {
         
         let (acceptor,http_address) = HttpServer::try_bind(config.http_address.parse::<SocketAddr>()?)?;
         let (mqtt_address, mqtt_listener) = mqtt::MqttServer::try_bind(config.mqtt_address.parse::<SocketAddr>()?)?;
-        let mqtt_handler = tokio::spawn(async { mqtt::MqttServer::start_rmqtt_server(mqtt_listener).await });
-        let http_handler = tokio::spawn(async { HttpServer::start_http_server(acceptor).await });
+        let mqtt_handler = tokio::spawn(async {
+            if let Err(e) = mqtt::MqttServer::start_rmqtt_server(mqtt_listener).await {
+                log::error!("init mqtt error {}", e);
+            }
+        });
+        let http_handler = tokio::spawn(async {
+            if let Err(e) = HttpServer::start_http_server(acceptor).await {
+                log::error!("init http error {}", e);
+            }
+        });
         // Use the http_auth_token from ServerConfig
         HttpServer::set_http_config(config.basic_path.clone(), config.http_auth_token.clone());
         let handler = try_join_all(vec![mqtt_handler, http_handler]);
