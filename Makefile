@@ -3,10 +3,16 @@
 
 prepare-linux:
 	sudo apt-get install -y libdbus-1-dev pkg-config
-prepare-mac:
+	rustup target add x86_64-unknown-linux-gnu
+prepare-mac-x86_64:
 	brew install dbus #pkg-config
+	rustup target add x86_64-apple-darwin
+prepare-mac-aarch64:
+	brew install dbus #pkg-config
+	rustup target add aarch64-apple-darwin
 prepare-windows:
 	vcpkg install dbus
+	rustup target add x86_64-pc-windows-msvc
 
 
 release-mac-x86_64:
