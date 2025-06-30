@@ -15,8 +15,8 @@ jobs:
             target: aarch64-apple-darwin
             build: make prepare-mac-aarch64
           - host: macos-latest
-            target: make prepare-mac-x86_64
-            build: make prepare-mac
+            target: x86_64-apple-darwin
+            build: make prepare-mac-x86_64
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             build: make prepare-windows
