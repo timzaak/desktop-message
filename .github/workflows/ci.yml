@@ -5,28 +5,29 @@ on:
 jobs:
   build:
     strategy:
-      max-parallel: 1
       fail-fast: true
       matrix:
         settings:
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: make release-linux
+            build: make prepare-linux
           - host: macos-12
             target: x86_64-apple-darwin
-            build: make release-mac-x86_64
+            build: make prepare-mac
           - host: macos-13-xlarge
             target: aarch64-apple-darwin
-            build: make release-mac-aarch64
+            build: make prepare-mac
           - host: windows-latest
             target: x86_64-pc-windows-msvc
-            build: make release-windows
+            build: make prepare-windows
 
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
+      - name: isntall env
+        run: ${{matrix.settings.build}}
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable

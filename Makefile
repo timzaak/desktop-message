@@ -1,6 +1,13 @@
 # This is for .github/workflows.
 .PHONY: release-mac-x86_64, release-mac-aarch64, release-linux,  release-linux-aarch64, release-windows
 
+prepare-linux:
+	apt install libdbus-1-dev pkg-config
+prepare-mac:
+	brew install pkg-config dbus
+prepare-windows:
+	vcpkg install dbus
+
 
 release-mac-x86_64:
 	cargo build --release --target=x86_64-apple-darwin
