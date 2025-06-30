@@ -1,10 +1,10 @@
+use async_trait::async_trait;
 use rmqtt::context::ServerContext;
 use rmqtt::hook::{Handler, HookResult, Parameter, Register, ReturnType, Type};
 use rmqtt::macros::Plugin;
 use rmqtt::plugin::Plugin;
-use rmqtt::{register, Result};
-use async_trait::async_trait;
 use rmqtt::types::AuthResult;
+use rmqtt::{Result, register};
 
 register!(AclPlugin::new);
 
@@ -36,8 +36,6 @@ impl Plugin for AclPlugin {
         Ok(())
     }
 
-
-
     #[inline]
     async fn stop(&mut self) -> Result<bool> {
         log::warn!("the default ACL plug-in, it cannot be stopped");
@@ -52,8 +50,7 @@ impl Plugin for AclPlugin {
     }
 }
 
-struct AclHandler {
-}
+struct AclHandler {}
 
 //TODO: only 127.0.0.1 connection can subscribe system message?
 #[async_trait]
@@ -69,15 +66,12 @@ impl Handler for AclHandler {
                     return (false, acc);
                 }
                 //if connect_info.client_id().starts_with("ac_") {
-                return (false, Some(HookResult::AuthResult(AuthResult::Allow(false, None))))
+                return (false, Some(HookResult::AuthResult(AuthResult::Allow(false, None))));
                 //}
                 //return (false, Some(HookResult::AuthResult(AuthResult::NotAuthorized)))
-
             }
             _ => {}
         }
         (true, acc)
     }
 }
-
-

@@ -7,7 +7,7 @@ rust-version.workspace = true
 
 [lib]
 name = "deskmsg_c"
-crate-type = ["cdylib", "lib"]
+crate-type = ["cdylib"]
 
 [dependencies]
 deskmsg = { workspace = true }

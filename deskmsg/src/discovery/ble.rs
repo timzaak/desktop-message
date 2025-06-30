@@ -1,20 +1,18 @@
-
 use anyhow::Result;
 use btleplug::api::{Central, Manager as _, ScanFilter, WriteType};
-use btleplug::platform::{Manager};
-use uuid::Uuid;
-use std::time::Duration;
+use btleplug::platform::Manager;
 use log;
+use std::time::Duration;
+use uuid::Uuid;
 
 /// Discovers BLE devices for a short duration, optionally filtering by service UUID.
-pub async fn discover_ble_devices(service_uuid_str: Option<&str>, seconds: u64) -> Result<Vec<btleplug::platform::Peripheral>> {
-    let manager = Manager::new().await.map_err(|e| {
-        anyhow::anyhow!("Failed to create BLE manager: {}", e)
-    })?;
+pub async fn discover_ble_devices(
+    service_uuid_str: Option<&str>,
+    seconds: u64,
+) -> Result<Vec<btleplug::platform::Peripheral>> {
+    let manager = Manager::new().await.map_err(|e| anyhow::anyhow!("Failed to create BLE manager: {}", e))?;
 
-    let adapters = manager.adapters().await.map_err(|e| {
-        anyhow::anyhow!("Failed to list BLE adapters: {}", e)
-    })?;
+    let adapters = manager.adapters().await.map_err(|e| anyhow::anyhow!("Failed to list BLE adapters: {}", e))?;
 
     let central = match adapters.into_iter().next() {
         Some(adapter) => adapter,
@@ -30,9 +28,7 @@ pub async fn discover_ble_devices(service_uuid_str: Option<&str>, seconds: u64) 
         match Uuid::parse_str(uuid_str) {
             Ok(parsed_uuid) => {
                 log::debug!("Scanning with service UUID filter: {}", parsed_uuid);
-                ScanFilter {
-                    services: vec![parsed_uuid],
-                }
+                ScanFilter { services: vec![parsed_uuid] }
             }
             Err(e) => {
                 return Err(anyhow::anyhow!("Invalid service UUID string '{}': {}", uuid_str, e));
@@ -44,30 +40,27 @@ pub async fn discover_ble_devices(service_uuid_str: Option<&str>, seconds: u64) 
     };
 
     // Start scanning for devices
-    central.start_scan(scan_filter).await.map_err(|e| {
-        anyhow::anyhow!("Failed to start scan: {}", e)
-    })?;
+    central.start_scan(scan_filter).await.map_err(|e| anyhow::anyhow!("Failed to start scan: {}", e))?;
 
     tokio::time::sleep(Duration::from_secs(seconds)).await;
 
-    let result = central.peripherals().await.map_err(|e| {
-            anyhow::anyhow!("Failed to get peripherals: {}", e)
-        })?;
-    central.stop_scan().await.map_err(|e| {
-        anyhow::anyhow!("Failed to stop scan: {}", e)
-    })?;
+    let result = central.peripherals().await.map_err(|e| anyhow::anyhow!("Failed to get peripherals: {}", e))?;
+    central.stop_scan().await.map_err(|e| anyhow::anyhow!("Failed to stop scan: {}", e))?;
     Ok(result)
 }
 
 use btleplug::api::Peripheral;
-pub async fn ble_write(peripheral: btleplug::platform::Peripheral, service_name:String, characteristic_name: String, message: String) -> Result<()> {
+pub async fn ble_write(
+    peripheral: btleplug::platform::Peripheral,
+    service_name: String,
+    characteristic_name: String,
+    message: String,
+) -> Result<()> {
     if !peripheral.is_connected().await? {
-        peripheral.connect().await.map_err(|e| {
-            anyhow::anyhow!("Failed to connect to peripheral: {}", e)
-        })?;
+        peripheral.connect().await.map_err(|e| anyhow::anyhow!("Failed to connect to peripheral: {}", e))?;
         peripheral.discover_services().await?
     }
-    
+
     let v = peripheral.services();
     for service in v {
         if service.uuid.to_string().contains(&service_name) {
@@ -78,7 +71,7 @@ pub async fn ble_write(peripheral: btleplug::platform::Peripheral, service_name:
                     log::info!("Found characteristic: {}", characteristic.uuid);
                     peripheral.write(&characteristic, message.as_bytes(), WriteType::WithResponse).await?;
                     peripheral.disconnect().await?;
-                    return Ok(())
+                    return Ok(());
                 }
             }
         }
@@ -106,7 +99,10 @@ mod tests {
                 }
             }
             Err(e) => {
-                log::warn!("test_discover_ble_devices_execution (no filter) error: {}. This might be due to no available Bluetooth adapter.", e);
+                log::warn!(
+                    "test_discover_ble_devices_execution (no filter) error: {}. This might be due to no available Bluetooth adapter.",
+                    e
+                );
             }
         }
     }
@@ -116,13 +112,19 @@ mod tests {
         let dummy_service_uuid = "00001800-0000-1000-8000-00805f9b34fb"; // Example: Generic Access Service
         match discover_ble_devices(Some(dummy_service_uuid), 5).await {
             Ok(devices) => {
-                log::info!("Test with filter discovered {} devices. (Expected to be few or none unless service is present).", devices.len());
+                log::info!(
+                    "Test with filter discovered {} devices. (Expected to be few or none unless service is present).",
+                    devices.len()
+                );
                 for device_info in devices {
                     log::info!("  - {}", device_info);
                 }
             }
             Err(e) => {
-                log::warn!("Test with filter error: {}. This might be due to no adapter or invalid UUID format if not careful.", e);
+                log::warn!(
+                    "Test with filter error: {}. This might be due to no adapter or invalid UUID format if not careful.",
+                    e
+                );
             }
         }
     }

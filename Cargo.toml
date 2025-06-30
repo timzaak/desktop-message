@@ -4,7 +4,7 @@ members = [
     "deskmsg",
     "bin",
     "deskmsg_c",
-    "deskmsg_napi",
+    #"deskmsg_napi",
 ]
 
 [workspace.package]
@@ -27,8 +27,9 @@ tracing-subscriber = "0.3"
 rmqtt = "0.15.0-beta.6"
 rmqtt-auto-subscription = "0.1"
 rmqtt-sys-topic = "0.1"
-
-
+#rmqtt = {path = "../rmqtt/rmqtt", version = "0.15.0-beta.7"}
+#rmqtt-auto-subscription = {path = "../rmqtt/rmqtt-plugins/rmqtt-auto-subscription"}
+#rmqtt-sys-topic = {path = "../rmqtt/rmqtt-plugins/rmqtt-sys-topic"}
 
 salvo = "0.76" # from https://github.com/rmqtt/rmqtt/blob/master/rmqtt-plugins/rmqtt-http-api/Cargo.toml
 

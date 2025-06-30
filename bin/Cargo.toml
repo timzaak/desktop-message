@@ -6,12 +6,9 @@ authors.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-deskmsg_c.workspace = true
 deskmsg.workspace = true
 tokio = {workspace = true, features = ["macros", "rt-multi-thread", "signal"]}
 anyhow = {workspace = true }
 
 tracing.workspace = true
 tracing-subscriber = {workspace = true, features = ["env-filter"]}
-# log.workspace = true
-serde_json = {workspace = true}

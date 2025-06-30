@@ -1,12 +1,12 @@
-use std::time::Duration;
-use mdns_sd::{ServiceDaemon, ServiceEvent, ServiceInfo};
 use log;
-pub fn discovery_mdns(service: &str, seconds:u64) -> anyhow::Result<Vec<ServiceInfo>>{
+use mdns_sd::{ServiceDaemon, ServiceEvent, ServiceInfo};
+use std::time::Duration;
+pub fn discovery_mdns(service: &str, seconds: u64) -> anyhow::Result<Vec<ServiceInfo>> {
     let mdns = ServiceDaemon::new().map_err(|e| {
         log::warn!("new ServiceDaemon error {}", e);
         e
     })?;
-    let receiver  = mdns.browse(service).map_err(|e| {
+    let receiver = mdns.browse(service).map_err(|e| {
         log::warn!("mdns browser error {}", e);
         e
     })?;
@@ -37,17 +37,14 @@ pub fn discovery_mdns(service: &str, seconds:u64) -> anyhow::Result<Vec<ServiceI
             }
         }
     }
-    
-
 
     Ok(r)
-
 }
 
 #[cfg(test)]
 mod test {
-    use std::time::Duration;
     use mdns_sd::{ServiceDaemon, ServiceInfo};
+    use std::time::Duration;
 
     #[test]
     pub fn test_discovery_mdns() {
@@ -59,22 +56,16 @@ mod test {
         let service_hostname = "tiny-protocol-hostname.local.";
         let port = 3456;
         let long = "two".repeat(30);
-        let properties = [("Path", long.as_str()), ("Pa1", "three"), ("PATH", "one")/*one could not be found*/,];
+        let properties = [("Path", long.as_str()), ("Pa1", "three"), ("PATH", "one") /*one could not be found*/];
 
-        let service_info = ServiceInfo::new(
-            &service_type,
-            instance_name,
-            &service_hostname,
-            my_addrs,
-            port,
-            &properties[..],
-        ).expect("valid service info")
-            .enable_addr_auto();
+        let service_info =
+            ServiceInfo::new(&service_type, instance_name, &service_hostname, my_addrs, port, &properties[..])
+                .expect("valid service info")
+                .enable_addr_auto();
         let mdns = ServiceDaemon::new().expect("service init");
         // let monitor = mdns.monitor().expect("Failed to monitor the daemon");
         let service_fullname = service_info.get_fullname().to_string();
-        mdns.register(service_info)
-            .expect("Failed to register mDNS service");
+        mdns.register(service_info).expect("Failed to register mDNS service");
         println!("Registered service {}.{}", &instance_name, &service_type);
         std::thread::spawn(move || {
             let wait_in_secs = 3;

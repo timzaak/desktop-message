@@ -1,12 +1,11 @@
-use std::net::SocketAddr;
 use anyhow::Result;
+use std::net::SocketAddr;
 
-
+use crate::http::HttpServer;
 use crate::mqtt;
-use futures::future::{try_join_all, TryJoinAll};
+use futures::future::{TryJoinAll, try_join_all};
 use serde::{Deserialize, Serialize};
 use tokio::task::JoinHandle;
-use crate::http::HttpServer;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ServerConfig {
@@ -20,15 +19,13 @@ pub struct Server {
     pub handler: TryJoinAll<JoinHandle<()>>,
     pub mqtt_address: SocketAddr,
     pub http_address: SocketAddr,
-    pub basic_path : String,
+    pub basic_path: String,
     pub http_auth_token: String, // Added http_auth_token field
 }
 
 impl Server {
-    
     pub fn new(config: ServerConfig) -> Result<Self> {
-        
-        let (acceptor,http_address) = HttpServer::try_bind(config.http_address.parse::<SocketAddr>()?)?;
+        let (acceptor, http_address) = HttpServer::try_bind(config.http_address.parse::<SocketAddr>()?)?;
         let (mqtt_address, mqtt_listener) = mqtt::MqttServer::try_bind(config.mqtt_address.parse::<SocketAddr>()?)?;
         let mqtt_handler = tokio::spawn(async {
             if let Err(e) = mqtt::MqttServer::start_rmqtt_server(mqtt_listener).await {
@@ -51,7 +48,7 @@ impl Server {
             http_auth_token: config.http_auth_token, // Store http_auth_token
         })
     }
-    
+
     pub fn get_config(&self) -> ServerConfig {
         ServerConfig {
             mqtt_address: self.mqtt_address.to_string(),
@@ -61,5 +58,3 @@ impl Server {
         }
     }
 }
-
-

@@ -1,4 +1,4 @@
-#include "../include/deskmsg_c.h"
+#include "deskmsg_c.h"
 #include <signal.h>
 #include <windows.h>
 #include <stdio.h>
@@ -13,14 +13,13 @@ void handle_signal(int sig) {
     }
 }
 
-
 int main() {
     const char *config = "{ \"mqtt_address\": \"0.0.0.0:1883\", \"http_address\": \"0.0.0.0:0\", \"basic_path\": \"\", \"http_auth_token\":\"abc\" }";
 
     char config_buffer[2048] = {0};
     deskmsg_ErrorCode code = deskmsg_start_server(config);
 
-    tiny_protocol_get_config(config_buffer);
+    deskmsg_get_config(config_buffer);
 
     deskmsg_ErrorCode result = deskmsg_get_config(config_buffer); // 调用函数
 
@@ -33,9 +32,9 @@ int main() {
     signal(SIGINT, handle_signal);   // Ctrl+C
     signal(SIGTERM, handle_signal);  // kill command
 
-    while (!stop) {
-        Sleep(2000);// Sleep until a signal is received
-    }
+    //while (!stop) {
+    //    Sleep(2000);// Sleep until a signal is received
+    //}
 
     return code;
 }
