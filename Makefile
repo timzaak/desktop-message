@@ -2,7 +2,7 @@
 .PHONY: release-mac-x86_64, release-mac-aarch64, release-linux,  release-linux-aarch64, release-windows
 
 prepare-linux:
-	sudo apt-get -y libdbus-1-dev pkg-config
+	sudo apt-get install -y libdbus-1-dev pkg-config
 prepare-mac:
 	brew install pkg-config dbus
 prepare-windows:
