@@ -15,13 +15,13 @@ fn main() -> anyhow::Result<()> {
         http_auth_token: "default_token_from_main".to_string(), // Added new field
     };
 
-    let rt  = tokio::runtime::Runtime::new()?;
+    let rt = tokio::runtime::Runtime::new()?;
     let server = rt.block_on(async {
         let server = deskmsg::server::Server::new(config).unwrap();
         server
     });
-    println!("{:?}",server.get_config());
-    
+    println!("{:?}", server.get_config());
+
     std::thread::sleep(Duration::from_secs(60 * 300));
 
     Ok(())
