@@ -5,41 +5,47 @@ on:
 jobs:
   build:
     strategy:
-      max-parallel: 1
       fail-fast: true
       matrix:
         settings:
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: make release-linux
+            release: make release-linux
+            build: make prepare-linux
             name: linux-x86_64
-          - host: macos-12
+          - host: macos-latest
             target: x86_64-apple-darwin
-            build: make release-mac-x86_64
+            build: make prepare-mac
+            release: make release-mac-x86_64
             name: darwin-x86_64
-          - host: macos-13-xlarge
+          - host: macos-latest
             target: aarch64-apple-darwin
-            build: make release-mac-aarch64
+            build: make prepare-mac
+            release: make release-mac-aarch64
             name: darwin-aarch64
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             name: windows-x86_64
-            build: make release-windows
+            release: make release-windows
+            build: make prepare-windows
+
 
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
+      - name: install libs
+        run: ${{ matrix.settings.build }}
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          components: clippy
+          components: clippy, rustfmt
       - uses: Swatinem/rust-cache@v2
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
       - name: Build
-        run: ${{ matrix.settings.build }}
+        run: ${{ matrix.settings.release }}
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

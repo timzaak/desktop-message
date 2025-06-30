@@ -4,7 +4,7 @@
 prepare-linux:
 	sudo apt-get install -y libdbus-1-dev pkg-config
 prepare-mac:
-	brew install pkg-config dbus
+	brew install dbus #pkg-config
 prepare-windows:
 	vcpkg install dbus
 
