@@ -37,7 +37,7 @@ jobs:
       - name: code format check
         run: cargo fmt --check
       - name: Build
-        run: cargo build --release
+        run: cargo build --release --target=${{ matrix.settings.target }}
 #
 #      - name: run example
 #        run: |
