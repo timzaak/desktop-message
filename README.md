@@ -1,7 +1,7 @@
-### Tiny-PROTOCOL
-PC <- tiny-protocol -> devices, support Rust, C, C++ and Node.js.
+### desktop message
+PC <- deskmsg -> devices, support Rust, C, C++ and Node.js.
 
-tiny-protocol = mqtt server + http static file server + mdns-sd or ble service discovery.
+deskmsg = mqtt server + http static file server + mdns-sd or ble service discovery.
 
 mqtt server used [rmqtt](https://github.com/rmqtt/rmqtt).
 
@@ -34,3 +34,7 @@ The `deskmsg_c` library provides a C-compatible API for the core Rust functional
 
 **Integrating with a C/C++ CMake Project:**
 Refer to `examples/c_example` of how to link and use the library.
+
+## TODO:
+- [ ] Add electron example, and release to npm
+- [ ] Release deskmsg lib to crates.io

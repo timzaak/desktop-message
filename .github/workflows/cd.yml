@@ -1,6 +1,10 @@
-name: build
+name: cd
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release"
+        required: true
 
 jobs:
   build:
@@ -52,4 +56,33 @@ jobs:
           if-no-files-found: error
           name: deskmsg-${{ matrix.settings.name }}
           path: release/
+  create_release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+      - name: Compress Artifacts
+        run: |
+          mkdir -p compressed_artifacts
+          cd release                  
+          zip -r ../compressed_artifacts/deskmsg-${{ inputs.version }}-windows-x86_64.zip deskmsg-windows-x86_64/*
+          zip -r ../compressed_artifacts/deskmsg-${{ inputs.version }}-linux-x86_64.zip deskmsg-linux-x86_64/*
+          zip -r ../compressed_artifacts/deskmsg-${{ inputs.version }}-darwin-x86_64.zip deskmsg-darwin-x86_64/*
+          zip -r ../compressed_artifacts/deskmsg-${{ inputs.version }}-darwin-aarch64.zip deskmsg-darwin-aarch64/*
 
+      - name: Create Draft Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.build_and_push.outputs.version }}
+          name: Release v${{ needs.build_and_push.outputs.version }}
+          draft: true
+          prerelease: false
+          files: |
+            compressed_artifacts/**
