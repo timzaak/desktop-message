@@ -14,40 +14,33 @@ prepare-windows:
 	vcpkg install dbus
 	rustup target add x86_64-pc-windows-msvc
 
-
-release-mac-x86_64:
+make-release-dir:
 	mkdir -p ./release/lib
 	mkdir -p ./release/include
+
+release-mac-x86_64:make-release-dir
 	cargo build --release --target=x86_64-apple-darwin
 	cp target/x86_64-apple-darwin/release/libdeskmsg_c.dylib ./release/lib/
 	cp deskmsg_c/include/deskmsg_c.h ./release/include/
 
-release-mac-aarch64:
-	mkdir -p ./release/lib
-	mkdir -p ./release/include
+release-mac-aarch64:make-release-dir
 	cargo build --release  --target=aarch64-apple-darwin
 	cp target/aarch64-apple-darwin/release/libdeskmsg_c.dylib ./release/lib/
 	cp deskmsg_c/include/deskmsg_c.h ./release/include/
 
-release-linux-aarch64:
-	mkdir -p ./release/lib
-	mkdir -p ./release/include
+release-linux-aarch64:make-release-dir
 	cargo build --release --target=aarch64-unknown-linux-gnu
 	cp target/aarch64-unknown-linux-gnu/release/libdeskmsg_c.so ./release/lib/
 	cp deskmsg_c/include/deskmsg_c.h ./release/include/
 
 
-release-linux:
-	mkdir -p ./release/lib
-	mkdir -p ./release/include
+release-linux:make-release-dir
 	cargo build --release --target=x86_64-unknown-linux-gnu
 	cp target/x86_64-unknown-linux-gnu/release/libdeskmsg_c.so ./release/lib/
 	cp deskmsg_c/include/deskmsg_c.h ./release/include/
 
 
-release-windows:
-	mkdir -p ./release/lib
-	mkdir -p ./release/include
+release-windows:make-release-dir
 	cargo build --release --target=x86_64-pc-windows-msvc
 	cp target/x86_64-pc-windows-msvc/release/deskmsg_c.dll ./release/lib/
 	cp target/x86_64-pc-windows-msvc/release/deskmsg_c.dll.lib ./release/lib/
