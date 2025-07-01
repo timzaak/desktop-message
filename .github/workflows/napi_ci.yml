@@ -44,9 +44,6 @@ jobs:
             build: npm build --target aarch64-apple-darwin
     name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
-    defaults:
-      run:
-        working-directory: ./deskmsg_napi
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
@@ -86,7 +83,7 @@ jobs:
         shell: bash
       - name: Install dependencies
         run: npm ci
-        working-directory: ./deskmsg_napi
+        working-directory: deskmsg_napi
       - name: Setup node x86
         uses: actions/setup-node@v4
         if: matrix.settings.target == 'i686-pc-windows-msvc'
@@ -94,7 +91,7 @@ jobs:
           node-version: 20
           cache: npm
           architecture: x86
-          cache-dependency-path: ./deskmsg_napi
+          cache-dependency-path: deskmsg_napi
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
@@ -106,12 +103,12 @@ jobs:
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         shell: bash
-        working-directory: ./deskmsg_napi
+        working-directory: deskmsg_napi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ./deskmsg_napi/${{ env.APP_NAME }}.*.node
+          path: deskmsg_napi/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
 #  test-macOS-windows-binding:
 #    name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
