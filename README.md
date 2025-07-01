@@ -11,11 +11,13 @@ ble used [btleplug](https://github.com/deviceplug/btleplug).
 
 ### how to use it with desktop software
 
-It provides both rust static library and C dynamic library.
+It provides rust static library, C dynamic library and node.js module.
 
 [c examples](examples/c_example) is an example about C to use it.
 
 [rust examples](bin) is an example about Rust to use it.
+
+[electron example](examples/electron_example) is an example about Electron to use it.
 
 
 ## Building and Using `deskmsg_c` (for C/C++ Projects)
@@ -36,5 +38,5 @@ The `deskmsg_c` library provides a C-compatible API for the core Rust functional
 Refer to `examples/c_example` of how to link and use the library.
 
 ## TODO:
-- [ ] Add electron example, and release to npm
+- [ ] release deskmsg_napi to npm
 - [ ] Release deskmsg lib to crates.io

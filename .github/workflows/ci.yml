@@ -2,6 +2,11 @@ name: ci
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - 'examples'
+      - 'deskmsg_napi'
 
 jobs:
   build:

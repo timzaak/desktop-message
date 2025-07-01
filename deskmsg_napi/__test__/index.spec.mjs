@@ -1,7 +1,20 @@
 import test from 'ava'
 
-import { sum } from '../index.js'
+import {getConfig, startServer} from "../index.js";
 
-test('sum from native', (t) => {
-  t.is(sum(1, 2), 3)
+test('start server napi', async (t) => {
+    startServer({
+        mqttAddress: '127.0.0.1:0',
+        httpAddress: '127.0.0.1:0',
+        basicPath: '',
+        httpAuthToken: 'default_token_from_main'
+    })
+    //
+    // await new Promise((resolve) => {
+    //     setTimeout(resolve, 1000*5)
+    // })
+    const v = getConfig()
+    console.log(v)
+    t.pass()
 })
+

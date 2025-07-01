@@ -20,6 +20,6 @@ export interface NapiServiceInfo {
   addresses: Array<string>
   properties: Array<NapiProperty>
 }
-export declare function startServerNapi(config: NapiServerConfig): void
-export declare function getConfigNapi(): NapiServerConfig
-export declare function discoveryNapi(serviceName: string, seconds: number): Array<NapiServiceInfo>
+export declare function startServer(config: NapiServerConfig): void
+export declare function getConfig(): NapiServerConfig
+export declare function discoveryMdns(serviceName: string, seconds: number): Array<NapiServiceInfo>

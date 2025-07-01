@@ -1,0 +1,18 @@
+{
+  "name": "electron_example",
+  "version": "0.0.1",
+  "description": "demo how o use deskmsg_napi",
+  "private": "true",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "deskmsg_napi": "file:../../deskmsg_napi"
+  },
+  "devDependencies": {
+    "electron": "^37.1.0"
+  }
+}
