@@ -4,7 +4,6 @@
 extern crate napi_derive;
 use napi::{Result, Status};
 use deskmsg::server::{Server, ServerConfig as DeskmsgServerConfig};
-use deskmsg::discovery::{discovery_mdns};
 use once_cell::sync::Lazy;
 use std::sync::OnceLock;
 use tokio::runtime::Runtime;
@@ -41,7 +40,7 @@ static TOKIO_RT: Lazy<Runtime> = Lazy::new(|| {
 static SERVER: OnceLock<Server> = OnceLock::new();
 
 #[napi]
-pub fn start_server_napi(config: NapiServerConfig) -> Result<()> {
+pub fn start_server(config: NapiServerConfig) -> Result<()> {
   if SERVER.get().is_some() {
     return Err(napi::Error::new(Status::GenericFailure, "Server already initialized".to_string()));
   }
@@ -70,7 +69,7 @@ pub fn start_server_napi(config: NapiServerConfig) -> Result<()> {
 }
 
 #[napi]
-pub fn get_config_napi() -> Result<NapiServerConfig> {
+pub fn get_config() -> Result<NapiServerConfig> {
   match SERVER.get() {
     Some(server_instance) => {
       let config = server_instance.get_config(); // Assumes get_config() returns DeskmsgServerConfig
@@ -86,9 +85,9 @@ pub fn get_config_napi() -> Result<NapiServerConfig> {
 }
 
 #[napi]
-pub fn discovery_napi(service_name: String, seconds: u32) -> Result<Vec<NapiServiceInfo>> {
+pub fn discovery_mdns(service_name: String, seconds: u32) -> Result<Vec<NapiServiceInfo>> {
   let result = TOKIO_RT.block_on(async {
-    discovery_mdns(&service_name, seconds as u64)
+    deskmsg::discovery::discovery_mdns(&service_name, seconds as u64)
   });
 
   match result {

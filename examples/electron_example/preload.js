@@ -1,5 +1,6 @@
-const { contextBridge } = require('electron/renderer')
+const { contextBridge, ipcRenderer  } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('deskmsg', {
-    //TODO:
+    'startNativeServer': () => ipcRenderer.invoke('startNativeServer'),
+    'getNativeServerConfig': () => ipcRenderer.invoke('getNativeServerConfig'),
 })

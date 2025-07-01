@@ -310,8 +310,8 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { startServerNapi, getConfigNapi, discoveryNapi } = nativeBinding
+const { startServer, getConfig, discoveryMdns } = nativeBinding
 
-module.exports.startServerNapi = startServerNapi
-module.exports.getConfigNapi = getConfigNapi
-module.exports.discoveryNapi = discoveryNapi
+module.exports.startServer = startServer
+module.exports.getConfig = getConfig
+module.exports.discoveryMdns = discoveryMdns

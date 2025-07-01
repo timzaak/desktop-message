@@ -5,11 +5,13 @@
   "private": "true",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "deskmsg_napi": "file:../../deskmsg_napi"
+  },
   "devDependencies": {
     "electron": "^37.1.0"
   }
