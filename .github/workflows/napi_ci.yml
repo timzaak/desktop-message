@@ -107,12 +107,13 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
         working-directory: deskmsg_napi
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: bindings-${{ matrix.settings.target }}
-          path: deskmsg_napi/${{ env.APP_NAME }}.*.node
-          if-no-files-found: error
+## in mac os ,path is error, should change it
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: bindings-${{ matrix.settings.target }}
+#          path: deskmsg_napi/${{ env.APP_NAME }}.*.node
+#          if-no-files-found: error
 #  test-macOS-windows-binding:
 #    name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
 #    needs:
