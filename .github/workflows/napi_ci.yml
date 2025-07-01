@@ -38,7 +38,10 @@ jobs:
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-            build: npm run build --target x86_64-unknown-linux-gnu
+            build: |
+              rustup install 1.85.0 &&
+              rustup default 1.85.0 &&
+              npm run build --target x86_64-unknown-linux-gnu
           - host: macos-latest
             target: aarch64-apple-darwin
             build: npm run build --target aarch64-apple-darwin
