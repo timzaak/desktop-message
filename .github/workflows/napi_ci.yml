@@ -13,6 +13,8 @@ on:
     tags-ignore:
       - '**'
     paths-ignore:
+      - '.github/workflows/cd.yml'
+      - '.github/workflows/ci.yml'
       - 'README.md'
       - '.gitignore'
       - 'bin'
@@ -42,6 +44,9 @@ jobs:
             build: npm build --target aarch64-apple-darwin
     name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
+    defaults:
+      run:
+        working-directory: ./deskmsg_napi
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
@@ -64,7 +69,7 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             .cargo-cache
-            target/
+            ../target/
           key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
       - uses: goto-bus-stop/setup-zig@v2
         if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' || matrix.settings.target == 'armv7-unknown-linux-musleabihf' }}
