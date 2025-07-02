@@ -93,6 +93,11 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
         working-directory: deskmsg_napi
+      - name: List packages
+        run: |
+          ls -al
+          ls -al ./${{ matrix.settings.target }}
+        working-directory: deskmsg_napi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
