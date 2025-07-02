@@ -23,7 +23,7 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: make prepare-mac-aarch64
-          - host: macos-latest
+          - host: macos-13
             target: x86_64-apple-darwin
             build: make prepare-mac-x86_64
           - host: windows-latest

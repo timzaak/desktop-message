@@ -17,7 +17,7 @@ jobs:
             release: make release-linux
             build: make prepare-linux
             name: linux-x86_64
-          - host: macos-latest
+          - host: macos-13
             target: x86_64-apple-darwin
             build: make prepare-mac-x86_64
             release: make release-mac-x86_64
