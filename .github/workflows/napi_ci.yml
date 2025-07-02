@@ -115,11 +115,6 @@ jobs:
         if: ${{ !matrix.settings.docker }}
         shell: bash
         working-directory: deskmsg_napi
-# in mac os ,path is error, should change it
-      - name: List packages
-        run: ls -R .
-        shell: bash
-        working-directory: deskmsg_napi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -153,6 +148,7 @@ jobs:
           cache-dependency-path: deskmsg_napi
       - name: Install dependencies
         run: npm ci
+        working-directory: deskmsg_napi
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -190,9 +186,6 @@ jobs:
         with:
           name: bindings-x86_64-unknown-linux-gnu
           path: deskmsg_napi
-      - name: List packages
-        run: ls -R .
-        shell: bash
       - name: Test bindings
         run: docker run --rm -v $(pwd):/build -w /build/deskmsg_napi node:${{ matrix.node }}-slim npm test
 #  publish:
