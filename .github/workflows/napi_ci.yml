@@ -119,11 +119,12 @@ jobs:
       - name: List packages
         run: ls -R .
         shell: bash
+        working-directory: deskmsg_napi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: deskmsg_napi/${{ env.APP_NAME }}.*.node
+          path: deskmsg_napi/${{ matrix.settings.target }}/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
