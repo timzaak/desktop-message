@@ -9,6 +9,8 @@ on:
       - 'examples'
       - 'deskmsg_napi'
       - '.github/workflows/napi_ci.yml'
+      - '.github/workflows/napi_cd.yml'
+      - '.github/workflows/napi_build.yml'
       - '.github/workflows/cd.yml'
 
 jobs:
@@ -23,7 +25,7 @@ jobs:
           - host: macos-latest
             target: aarch64-apple-darwin
             build: make prepare-mac-aarch64
-          - host: macos-latest
+          - host: macos-13
             target: x86_64-apple-darwin
             build: make prepare-mac-x86_64
           - host: windows-latest

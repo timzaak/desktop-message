@@ -1,6 +1,6 @@
 {
   "name": "deskmsg_napi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
@@ -11,7 +11,13 @@
       ]
     }
   },
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timzaak/desktop-message.git"
+  },
+  "author": "Timzaak",
+  "homepage": "https://github.com/timzaak/desktop-message#readme",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4",
     "ava": "^6.0.1"
