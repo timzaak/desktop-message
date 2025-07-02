@@ -9,6 +9,8 @@ on:
       - 'examples'
       - 'deskmsg_napi'
       - '.github/workflows/napi_ci.yml'
+      - '.github/workflows/napi_cd.yml'
+      - '.github/workflows/napi_build.yml'
       - '.github/workflows/cd.yml'
 
 jobs:
