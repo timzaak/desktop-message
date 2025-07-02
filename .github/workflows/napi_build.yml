@@ -101,6 +101,7 @@ jobs:
         run: |
           ls -al
           ls -al ./${{ matrix.settings.target }}
+        shell: bash
         working-directory: deskmsg_napi
       - name: Upload artifact
         uses: actions/upload-artifact@v4
