@@ -1,4 +1,8 @@
 name: napi_build
+
+env:
+  APP_NAME: deskmsg_napi
+
 on:
   workflow_call:
 
