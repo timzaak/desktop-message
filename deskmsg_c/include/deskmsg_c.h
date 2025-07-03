@@ -26,10 +26,10 @@ extern "C" {
 
 enum deskmsg_ErrorCode deskmsg_get_config(char *output_ptr);
 
-enum deskmsg_ErrorCode deskmsg_discovery(const char *service_ptr,
-                                         uint64_t seconds,
-                                         char *output_str_ptr,
-                                         uintptr_t output_str_len);
+enum deskmsg_ErrorCode deskmsg_discovery_mdns(const char *service_ptr,
+                                              uint64_t seconds,
+                                              char *output_str_ptr,
+                                              uintptr_t output_str_len);
 
 enum deskmsg_ErrorCode deskmsg_start_server(const char *config_ptr);
 

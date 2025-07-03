@@ -7,7 +7,7 @@ mqtt server used [rmqtt](https://github.com/rmqtt/rmqtt).
 
 mdns-sd used [mdns-sd](https://github.com/keepsimple1/mdns-sd).
 
-ble used [btleplug](https://github.com/deviceplug/btleplug).
+ble used [btleplug](https://github.com/deviceplug/btleplug) (under development).
 
 ### how to use it with desktop software
 
@@ -38,5 +38,6 @@ The `deskmsg_c` library provides a C-compatible API for the core Rust functional
 Refer to `examples/c_example` of how to link and use the library.
 
 ## TODO:
-- [ ] release deskmsg_napi to npm
+- [ ] Release deskmsg_napi to npm
 - [ ] Release deskmsg lib to crates.io
+- [ ] ble discovery implementation

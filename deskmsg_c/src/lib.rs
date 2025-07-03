@@ -1,4 +1,5 @@
-use deskmsg::discovery::discovery_mdns;
+use btleplug::api::Peripheral;
+use deskmsg::discovery::{discovery_mdns, discover_ble_devices, ble_write};
 use deskmsg::server::{Server, ServerConfig};
 use log;
 use once_cell::sync::Lazy;
@@ -56,7 +57,7 @@ pub extern "C" fn deskmsg_get_config(output_ptr: *mut c_char) -> ErrorCode {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn deskmsg_discovery(
+pub extern "C" fn deskmsg_discovery_mdns(
     service_ptr: *const c_char,
     seconds: u64,
     output_str_ptr: *mut c_char,
@@ -112,6 +113,54 @@ pub extern "C" fn deskmsg_discovery(
         Err(_) => ErrorCode::MDNSInitFailure,
     }
 }
+
+
+/*
+struct CPeripheral {
+    peripheral: btleplug::platform::Peripheral
+    
+     // convert this to C compatible method.
+     // self.peripheral.id().to_string();
+     //    self.peripheral.properties();
+     //    self.peripheral.address().to_string()
+     //    self.peripheral.services();
+     // 
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn deskmsg_discovery_ble_scan(service_uuid_ptr: *const c_char, seconds: u32) {
+    let service_uuid = if service_uuid_ptr.is_null() {
+        None
+    } else {
+        Some(unsafe {
+            CStr::from_ptr(service_uuid_ptr).to_string_lossy().into_owned()
+        })
+    };
+    let result = TOKIO_RT.block_on( async {
+        discover_ble_devices(service_uuid.as_deref(), seconds as u64).await
+    });
+    match result {
+        Ok(devices) => {
+            let c_devices = devices.into_iter().map(|device| {
+                CPeripheral {
+                    peripheral: device
+                }
+            }).collect::<Vec<_>>();
+        },
+        Err(e) => {
+            eprintln!("Error: {}", e);
+        }
+    }
+
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn deskmsg_discovery_ble_write() {
+
+    //ble_write();
+}
+
+ */
 
 #[unsafe(no_mangle)]
 pub extern "C" fn deskmsg_start_server(config_ptr: *const c_char) -> ErrorCode {
