@@ -7,7 +7,7 @@ use deskmsg::server::{Server, ServerConfig};
 use log;
 use once_cell::sync::Lazy;
 use serde_json::json;
-use std::ffi::{c_char, c_uint, CStr, CString};
+use std::ffi::{CStr, CString, c_char, c_uint};
 use std::fmt::Display;
 use std::sync::OnceLock;
 use tokio::runtime::Runtime;
