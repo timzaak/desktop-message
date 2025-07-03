@@ -51,7 +51,7 @@ pub async fn discover_ble_devices(
 
 use btleplug::api::Peripheral;
 pub async fn ble_write(
-    peripheral: btleplug::platform::Peripheral,
+    peripheral: &btleplug::platform::Peripheral,
     service_name: String,
     characteristic_name: String,
     message: String,

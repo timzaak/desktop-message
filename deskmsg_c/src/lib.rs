@@ -1,10 +1,13 @@
+mod c_peripheral;
+
+use crate::c_peripheral::CPeripheral;
 use btleplug::api::Peripheral;
-use deskmsg::discovery::{discovery_mdns, discover_ble_devices, ble_write};
+use deskmsg::discovery::{ble_write, discover_ble_devices, discovery_mdns};
 use deskmsg::server::{Server, ServerConfig};
 use log;
 use once_cell::sync::Lazy;
 use serde_json::json;
-use std::ffi::{CStr, CString, c_char};
+use std::ffi::{c_char, c_uint, CStr, CString};
 use std::fmt::Display;
 use std::sync::OnceLock;
 use tokio::runtime::Runtime;
@@ -29,6 +32,7 @@ pub enum ErrorCode {
     ServerHasInit = 4,
     MDNSInitFailure = 5,
     OutOfAllocatedBounds = 6,
+    OperationFailure = 7,
 }
 impl Display for ErrorCode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -99,8 +103,8 @@ pub extern "C" fn deskmsg_discovery_mdns(
                     .collect::<Vec<_>>()
             );
 
-            let j_str = CString::new(j.to_string()).unwrap(); // Consider error handling
-            let j_bytes = j_str.as_bytes_with_nul(); // Renamed j_str to j_bytes for clarity
+            let j_str = CString::new(j.to_string()).unwrap();
+            let j_bytes = j_str.as_bytes_with_nul();
 
             if j_bytes.len() > output_str_len {
                 return ErrorCode::OutOfAllocatedBounds;
@@ -114,53 +118,68 @@ pub extern "C" fn deskmsg_discovery_mdns(
     }
 }
 
-
-/*
-struct CPeripheral {
-    peripheral: btleplug::platform::Peripheral
-    
-     // convert this to C compatible method.
-     // self.peripheral.id().to_string();
-     //    self.peripheral.properties();
-     //    self.peripheral.address().to_string()
-     //    self.peripheral.services();
-     // 
-}
-
 #[unsafe(no_mangle)]
-pub extern "C" fn deskmsg_discovery_ble_scan(service_uuid_ptr: *const c_char, seconds: u32) {
+pub extern "C" fn deskmsg_discovery_ble_scan(
+    service_uuid_ptr: *const c_char,
+    seconds: u32,
+    peripherals: *mut *mut CPeripheral,
+    len: *mut c_uint,
+) -> ErrorCode {
     let service_uuid = if service_uuid_ptr.is_null() {
         None
     } else {
-        Some(unsafe {
-            CStr::from_ptr(service_uuid_ptr).to_string_lossy().into_owned()
-        })
+        Some(unsafe { CStr::from_ptr(service_uuid_ptr).to_string_lossy().into_owned() })
     };
-    let result = TOKIO_RT.block_on( async {
-        discover_ble_devices(service_uuid.as_deref(), seconds as u64).await
-    });
+    let result = TOKIO_RT.block_on(async { discover_ble_devices(service_uuid.as_deref(), seconds as u64).await });
     match result {
         Ok(devices) => {
-            let c_devices = devices.into_iter().map(|device| {
-                CPeripheral {
-                    peripheral: device
-                }
-            }).collect::<Vec<_>>();
-        },
+            let mut c_devices =
+                devices.into_iter().map(|device| CPeripheral { peripheral: device }).collect::<Vec<_>>();
+            c_devices.shrink_to_fit();
+            let _len = c_devices.len() as c_uint;
+            let ptr = c_devices.as_mut_ptr();
+            std::mem::forget(c_devices);
+            unsafe {
+                *len = _len;
+                *peripherals = ptr;
+            }
+            ErrorCode::Ok
+        }
         Err(e) => {
-            eprintln!("Error: {}", e);
+            log::warn!("Error: {}", e);
+            ErrorCode::OperationFailure
         }
     }
-
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn deskmsg_discovery_ble_free(structs: *mut CPeripheral, len: c_uint) {
+    if structs.is_null() {
+        return;
+    }
+    let _ = unsafe { Vec::from_raw_parts(structs, len as usize, len as usize) };
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn deskmsg_discovery_ble_write() {
-
-    //ble_write();
+pub extern "C" fn deskmsg_discovery_ble_write(
+    cperipheral: *mut CPeripheral,
+    service_uuid: *const c_char,
+    characteristic_uuid: *const c_char,
+    message: *const c_char,
+) -> ErrorCode {
+    let cperipheral = unsafe { &*cperipheral };
+    let service_uuid = unsafe { CStr::from_ptr(service_uuid).to_string_lossy().into_owned() };
+    let characteristic_uuid = unsafe { CStr::from_ptr(characteristic_uuid).to_string_lossy().into_owned() };
+    let message = unsafe { CStr::from_ptr(message).to_string_lossy().into_owned() };
+    let result = TOKIO_RT
+        .block_on(async { ble_write(&cperipheral.peripheral, service_uuid, characteristic_uuid, message).await });
+    match result {
+        Ok(_) => ErrorCode::Ok,
+        Err(e) => {
+            log::warn!("Error: {}", e);
+            ErrorCode::OperationFailure
+        }
+    }
 }
-
- */
 
 #[unsafe(no_mangle)]
 pub extern "C" fn deskmsg_start_server(config_ptr: *const c_char) -> ErrorCode {

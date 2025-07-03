@@ -18,7 +18,10 @@ typedef enum deskmsg_ErrorCode {
   ServerHasInit = 4,
   MDNSInitFailure = 5,
   OutOfAllocatedBounds = 6,
+  OperationFailure = 7,
 } deskmsg_ErrorCode;
+
+typedef struct deskmsg_CPeripheral deskmsg_CPeripheral;
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,7 +34,23 @@ enum deskmsg_ErrorCode deskmsg_discovery_mdns(const char *service_ptr,
                                               char *output_str_ptr,
                                               uintptr_t output_str_len);
 
+enum deskmsg_ErrorCode deskmsg_discovery_ble_scan(const char *service_uuid_ptr,
+                                                  uint32_t seconds,
+                                                  struct deskmsg_CPeripheral **peripherals,
+                                                  unsigned int *len);
+
+void deskmsg_discovery_ble_free(struct deskmsg_CPeripheral *structs, unsigned int len);
+
+enum deskmsg_ErrorCode deskmsg_discovery_ble_write(struct deskmsg_CPeripheral *cperipheral,
+                                                   const char *service_uuid,
+                                                   const char *characteristic_uuid,
+                                                   const char *message);
+
 enum deskmsg_ErrorCode deskmsg_start_server(const char *config_ptr);
+
+int deskmsg_ble_id(deskmsg_Peripheral *peripheral, char *buf, int len);
+
+int deskmsg_ble_address(deskmsg_Peripheral *peripheral, char *buf, int len);
 
 #ifdef __cplusplus
 }  // extern "C"
