@@ -14,7 +14,7 @@ crate-type = ["lib"]
 [dependencies]
 tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
 mdns-sd = {workspace = true}
-rmqtt = { workspace = true, features = ["plugin", "rmqtt-macros"]}
+rmqtt = { workspace = true, features = ["plugin", "macros"]}
 rmqtt-sys-topic = { workspace = true }
 rmqtt-auto-subscription = { workspace = true }
 ahash = {workspace = true}
