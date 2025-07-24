@@ -20,7 +20,7 @@
   "homepage": "https://github.com/timzaak/desktop-message#readme",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@napi-rs/cli": "^3.0.0",
+    "@napi-rs/cli": "^3.0.3",
     "ava": "^6.4.1"
   },
   "ava": {
