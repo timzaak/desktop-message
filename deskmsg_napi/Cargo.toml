@@ -9,7 +9,7 @@ rust-version.workspace = true
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = { version = "3.1.2", default-features = false, features = ["napi4"] }
+napi = { version = "3.1.2" }
 napi-derive = "3.1.1"
 deskmsg = { workspace = true }
 log.workspace = true
