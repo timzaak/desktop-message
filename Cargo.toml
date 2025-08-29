@@ -14,19 +14,19 @@ authors = ["timzaak <zsy.evan@gmail.com>"]
 rust-version = "1.86.0"
 
 [workspace.dependencies]
-deskmsg = {path = "deskmsg"}
+deskmsg = { path = "deskmsg" }
 #deskmsg_c = {path = "deskmsg_c" }
 cbindgen = "0.29"
-mdns-sd = "0.13"
+mdns-sd = "0.14"
 btleplug = "0.11"
 
 # log
 tracing = "0.1"
 tracing-subscriber = "0.3"
 
-rmqtt = "0.15.0-rc.1"
-rmqtt-auto-subscription = "0.1"
-rmqtt-sys-topic = "0.1"
+rmqtt = "0.15"
+rmqtt-auto-subscription = "0.15"
+rmqtt-sys-topic = "0.15"
 #rmqtt = {path = "../rmqtt/rmqtt", version = "0.15.0-beta.7"}
 #rmqtt-auto-subscription = {path = "../rmqtt/rmqtt-plugins/rmqtt-auto-subscription"}
 #rmqtt-sys-topic = {path = "../rmqtt/rmqtt-plugins/rmqtt-sys-topic"}
@@ -34,59 +34,22 @@ rmqtt-sys-topic = "0.1"
 salvo = "0.76" # from https://github.com/rmqtt/rmqtt/blob/master/rmqtt-plugins/rmqtt-http-api/Cargo.toml
 
 # copy from rmqtt workspace
-tokio = { version = "1.44",  default-features = false }
+tokio = { version = "1.44", default-features = false }
 reqwest = "0.12"
 futures = "0.3"
 serde = "1.0"
 tokio-util = "0.7"
 tokio-rustls = "0.26"
-socket2 = "0.5"
-prost = "0.13"
-rustls = "0.23"
-once_cell = "=1.20.2"
 dashmap = "=6.1.0"
 ahash = "0.8"
 bytes = "1.9"
-bytestring = "1.4"
-thiserror = "=1.0.69"
-anyhow = "=1.0.94"
-async-trait = "0.1"
-serde_json = "1.0"
-chrono = { version = "0.4", default-features = false }
-uuid = "=1.11.0"
-rand = "0.9.0"
-crossbeam = "0.8"
-governor = "0.10"
-config = { version = "0.15.8", default-features = false}
-log = "0.4"
-slog = "2.7"
-slog-term = "2.9"
-slog-async = "2.8"
-slog-stdlog = "4.1"
-slog-scope = "4.4"
-base64 = "0.22"
-bincode = "1.3"
-url = { version = "=2.5.4", default-features = false }
-systemstat = "0.2"
-itertools = "0.14"
-structopt = "0.3"
-tokio-tungstenite = "0.26"
-pin-project-lite = "0.2"
-bitflags = "=2.6.0"
-leaky-bucket = "=1.1.2"
-scc = "=2.3.1"
-get-size = "0.1"
-prometheus = "0.13"
-futures-time = "3.0"
-nonzero_ext = "0.3"
-itoa = "=1.0.14"
-simple_logger = { version = "5.0.0", default-features = false }
-regex = "=1.11.1"
-backoff = "0.4"
-webpki-roots = "0.26"
-toml = "0.8"
-rust-box = "0.15"
 scopeguard = "1"
+anyhow = "1.0"
+async-trait = "0.1"
+log = "0.4"
+once_cell = "1.21.3"
+uuid = "1.11.0"
+serde_json = "1.0"
 
 [profile.dev]
 opt-level = 0
