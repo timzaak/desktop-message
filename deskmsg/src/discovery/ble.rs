@@ -95,7 +95,7 @@ mod tests {
             Ok(devices) => {
                 println!("Test (no filter) discovered {} devices:", devices.len());
                 for device_info in devices {
-                    println!("  - {}", device_info);
+                    println!("  - {:?}", device_info);
                 }
             }
             Err(e) => {
@@ -117,7 +117,7 @@ mod tests {
                     devices.len()
                 );
                 for device_info in devices {
-                    log::info!("  - {}", device_info);
+                    log::info!("  - {:?}", device_info);
                 }
             }
             Err(e) => {

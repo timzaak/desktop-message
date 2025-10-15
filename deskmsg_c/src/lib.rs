@@ -1,7 +1,6 @@
 mod c_peripheral;
 
 use crate::c_peripheral::CPeripheral;
-use btleplug::api::Peripheral;
 use deskmsg::discovery::{ble_write, discover_ble_devices, discovery_mdns};
 use deskmsg::server::{Server, ServerConfig};
 use log;

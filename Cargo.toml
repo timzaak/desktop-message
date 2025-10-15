@@ -24,9 +24,9 @@ btleplug = "0.11"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 
-rmqtt = "0.15"
-rmqtt-auto-subscription = "0.15"
-rmqtt-sys-topic = "0.15"
+rmqtt = "0.16"
+rmqtt-auto-subscription = "0.16"
+rmqtt-sys-topic = "0.16"
 #rmqtt = {path = "../rmqtt/rmqtt", version = "0.15.0-beta.7"}
 #rmqtt-auto-subscription = {path = "../rmqtt/rmqtt-plugins/rmqtt-auto-subscription"}
 #rmqtt-sys-topic = {path = "../rmqtt/rmqtt-plugins/rmqtt-sys-topic"}

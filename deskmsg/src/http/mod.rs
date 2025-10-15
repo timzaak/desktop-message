@@ -110,14 +110,20 @@ async fn upload(req: &mut Request, res: &mut Response) {
         }
     };
 
-    let save_path = format!("{}/{}", upload_dir, filename);
-    // 确保 save_path 在 upload_dir 目录下面
-    if Path::new(&save_path).parent() != Some(Path::new(&upload_dir)) {
-        res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
-        res.render("bad file name");
+    let safe_filename = Path::new(filename)
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or("");
+
+    if safe_filename.is_empty() {
+        res.status_code(StatusCode::BAD_REQUEST);
+        res.render("Invalid file name");
+        return;
     }
 
-    if let Err(e) = std::fs::copy(file.path(), Path::new(&save_path)) {
+    let save_path = Path::new(&upload_dir).join(safe_filename);
+
+    if let Err(e) = std::fs::copy(file.path(), &save_path) {
         res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         res.render(format!("Failed to save file: {}", e));
         return;
