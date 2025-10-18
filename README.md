@@ -20,6 +20,19 @@ It provides rust static library, C dynamic library and node.js module.
 
 [electron example](examples/electron_example) is an example about Electron to use it.
 
+### USB Serial Communication
+
+For USB serial communication, you can use the `usbd-serial` crate. It provides a simple and efficient way to communicate with USB serial devices.
+
+To add it to your project, include the following in your `Cargo.toml`:
+
+```toml
+[dependencies]
+usbd-serial = "0.1.1"
+```
+
+For more details, refer to the [usbd-serial documentation](https://docs.rs/usbd-serial/latest/usbd_serial/).
+
 ## Building and Using `deskmsg_c` (for C/C++ Projects)
 
 The `deskmsg_c` library provides a C-compatible API for the core Rust functionality. It can be integrated into C/C++

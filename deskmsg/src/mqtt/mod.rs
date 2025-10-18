@@ -12,7 +12,7 @@ pub struct MqttServer {}
 
 impl MqttServer {
     pub fn try_bind(address: SocketAddr) -> Result<(SocketAddr, Listener)> {
-        let socket = Builder::new().name("external/tcp").laddr(address.clone()).bind()?;
+        let socket = Builder::new().name("external/tcp").laddr(address).bind()?;
         let socket = socket.tcp()?;
         let address = socket.local_addr()?;
         Ok((address, socket))

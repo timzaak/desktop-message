@@ -110,10 +110,7 @@ async fn upload(req: &mut Request, res: &mut Response) {
         }
     };
 
-    let safe_filename = Path::new(filename)
-        .file_name()
-        .and_then(|s| s.to_str())
-        .unwrap_or("");
+    let safe_filename = Path::new(filename).file_name().and_then(|s| s.to_str()).unwrap_or("");
 
     if safe_filename.is_empty() {
         res.status_code(StatusCode::BAD_REQUEST);

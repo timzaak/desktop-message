@@ -59,7 +59,7 @@ mod test {
         let properties = [("Path", long.as_str()), ("Pa1", "three"), ("PATH", "one") /*one could not be found*/];
 
         let service_info =
-            ServiceInfo::new(&service_type, instance_name, &service_hostname, my_addrs, port, &properties[..])
+            ServiceInfo::new(service_type, instance_name, service_hostname, my_addrs, port, &properties[..])
                 .expect("valid service info")
                 .enable_addr_auto();
         let mdns = ServiceDaemon::new().expect("service init");

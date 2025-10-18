@@ -17,8 +17,8 @@ fn main() -> anyhow::Result<()> {
 
     let rt = tokio::runtime::Runtime::new()?;
     let server = rt.block_on(async {
-        let server = deskmsg::server::Server::new(config).unwrap();
-        server
+
+        deskmsg::server::Server::new(config).unwrap()
     });
     println!("{:?}", server.get_config());
 

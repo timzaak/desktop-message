@@ -3,7 +3,6 @@ mod c_peripheral;
 use crate::c_peripheral::CPeripheral;
 use deskmsg::discovery::{ble_write, discover_ble_devices, discovery_mdns};
 use deskmsg::server::{Server, ServerConfig};
-use log;
 use once_cell::sync::Lazy;
 use serde_json::json;
 use std::ffi::{CStr, CString, c_char, c_uint};

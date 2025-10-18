@@ -56,21 +56,18 @@ struct AclHandler {}
 #[async_trait]
 impl Handler for AclHandler {
     async fn hook(&self, param: &Parameter, acc: Option<HookResult>) -> ReturnType {
-        match param {
-            Parameter::ClientAuthenticate(_) => {
-                if matches!(
-                    acc,
-                    Some(HookResult::AuthResult(AuthResult::BadUsernameOrPassword))
-                        | Some(HookResult::AuthResult(AuthResult::NotAuthorized))
-                ) {
-                    return (false, acc);
-                }
-                //if connect_info.client_id().starts_with("ac_") {
-                return (false, Some(HookResult::AuthResult(AuthResult::Allow(false, None))));
-                //}
-                //return (false, Some(HookResult::AuthResult(AuthResult::NotAuthorized)))
+        if let Parameter::ClientAuthenticate(_) = param {
+            if matches!(
+                acc,
+                Some(HookResult::AuthResult(AuthResult::BadUsernameOrPassword))
+                    | Some(HookResult::AuthResult(AuthResult::NotAuthorized))
+            ) {
+                return (false, acc);
             }
-            _ => {}
+            //if connect_info.client_id().starts_with("ac_") {
+            return (false, Some(HookResult::AuthResult(AuthResult::Allow(false, None))));
+            //}
+            //return (false, Some(HookResult::AuthResult(AuthResult::NotAuthorized)))
         }
         (true, acc)
     }
