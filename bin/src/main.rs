@@ -16,10 +16,7 @@ fn main() -> anyhow::Result<()> {
     };
 
     let rt = tokio::runtime::Runtime::new()?;
-    let server = rt.block_on(async {
-
-        deskmsg::server::Server::new(config).unwrap()
-    });
+    let server = rt.block_on(async { deskmsg::server::Server::new(config).unwrap() });
     println!("{:?}", server.get_config());
 
     std::thread::sleep(Duration::from_secs(60 * 300));
